@@ -17,6 +17,7 @@
     "vite-plugin-solid": "^2.11.1"
   },
   "dependencies": {
+    "@types/web-bluetooth": "^0.0.20",
     "solid-js": "^1.9.3"
   }
 }

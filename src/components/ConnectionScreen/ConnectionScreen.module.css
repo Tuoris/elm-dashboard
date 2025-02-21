@@ -1,0 +1,45 @@
+.ConnectionScreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 0.5rem;
+}
+
+.ConnectionLogs {
+    display: block;
+    padding: 0.4rem;
+    border: 1px solid rgb(126, 126, 126);
+    align-self: normal;
+    overflow: visible;
+    text-wrap: auto;
+
+    font-size: 0.9rem;
+
+    border-radius: 0;
+
+    &>* {
+        margin-bottom: 0.4rem;
+    }
+}
+
+.DebugLog {
+    color: gainsboro;
+}
+
+.InfoLog {
+    color: greenyellow;
+}
+
+.WarningLog {
+    color: rgb(255, 233, 109);
+    font-weight: bold;
+
+}
+
+.ErrorLog {
+    color: crimson;
+    font-weight: bold;
+
+}

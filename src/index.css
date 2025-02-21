@@ -16,8 +16,8 @@ code {
     monospace;
 }
 
-svg text {
-  /* font-family: 'Courier New', Courier, monospace; */
+button {
+  padding: 1rem 2rem;
 }
 
 svg {
