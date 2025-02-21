@@ -1,22 +1,23 @@
-import { createContext, createSignal, For, type Component } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createContext, createEffect, createSignal, For, type Component } from "solid-js";
+import { createStore, Part } from "solid-js/store";
 
 import styles from "./App.module.css";
 import { Dashboard } from "./components/Dashboard";
 import { CarLiveDataContext } from "./CarLiveDataContext";
-import { CarLiveDataType, DeferredValue, Logs, ScreenName } from "./types/common";
+import { CarLiveDataType, Logs, ScreenName } from "./types/common";
 import { ConnectionScreen } from "./components/ConnectionScreen";
 import { Elm327BluetoothAdapter } from "./features/Bluetooth/Bluetooth";
 import { COMMANDS } from "./features/Bluetooth/Bluetooth.constants";
+import { parseDeferredIntegerValue, sleep } from "./utils";
 
 const SCREENS = {
   connectionScreen: ConnectionScreen,
   dashboard: Dashboard,
 };
 
-const App: Component = () => {
-  const bluetoothAdapter = new Elm327BluetoothAdapter();
+const bluetoothAdapter = new Elm327BluetoothAdapter();
 
+const App: Component = () => {
   const [logs, setLogs] = createSignal<Logs>([
     {
       level: "info",
@@ -31,48 +32,51 @@ const App: Component = () => {
   const [getCurrentScreenName, setCurrentScreenName] = createSignal<ScreenName>("connectionScreen");
 
   const [carParams, setCarParams] = createStore<CarLiveDataType>({
-    coolantTemperature: 30,
-    oilTemperature: 110,
-    rpm: 6500,
-    vehicleSpeed: 40,
+    coolantTemperature: 0,
+    oilTemperature: 0,
+    rpm: 0,
+    vehicleSpeed: 0,
   });
 
-  const parseValue = (value: DeferredValue | undefined) => {
-    const numberValue = parseInt(`${value}`);
-    return isNaN(numberValue) ? 0 : numberValue;
-  };
+  console.log([carParams, setCarParams]);
+  console.log(bluetoothAdapter);
+
+  const timeoutBetweenCommands = 100;
+  const busyTimeout = 100;
 
   const mainLoop = async () => {
-    if (bluetoothAdapter.isConnected) {
-      const coolantTemperature = await bluetoothAdapter.sendData(COMMANDS.ENGINE_COOLANT_TEMPERATURE);
-      setCarParams({
-        ...carParams,
-        coolantTemperature: parseValue(coolantTemperature),
-      });
-      const oilTemperature = await bluetoothAdapter.sendData(COMMANDS.ENGINE_OIL_TEMPERATURE);
-      setCarParams({
-        ...carParams,
-        oilTemperature: parseValue(oilTemperature),
-      });
-      const rpm = await bluetoothAdapter.sendData(COMMANDS.ENGINE_SPEED);
-      setCarParams({
-        ...carParams,
-        rpm: parseValue(rpm),
-      });
-      const vehicleSpeed = await bluetoothAdapter.sendData(COMMANDS.VEHICLE_SPEED);
-      setCarParams({
-        ...carParams,
-        vehicleSpeed: parseValue(vehicleSpeed),
-      });
-    }
+    const loopCommands: [a: Part<CarLiveDataType, keyof CarLiveDataType>, b: string][] = [
+      ["coolantTemperature", COMMANDS.ENGINE_COOLANT_TEMPERATURE],
+      // ["oilTemperature", COMMANDS.ENGINE_OIL_TEMPERATURE],
+      ["rpm", COMMANDS.ENGINE_SPEED],
+      ["vehicleSpeed", COMMANDS.VEHICLE_SPEED],
+    ];
+    while (true) {
+      if (bluetoothAdapter.isConnected) {
+        await sleep(timeoutBetweenCommands / 2);
 
-    setTimeout(mainLoop, 300);
+        for (const [param, command] of loopCommands) {
+          const value = await bluetoothAdapter.sendData(command);
+          setCarParams(param, parseDeferredIntegerValue(value));
+
+          await sleep(timeoutBetweenCommands);
+        }
+      } else {
+        await sleep(busyTimeout);
+      }
+    }
   };
+
+  createEffect(() => {
+    mainLoop();
+  });
+
+  const goToMainScreen = () => setCurrentScreenName("connectionScreen");
 
   return (
     <div class={styles.App}>
       <CarLiveDataContext.Provider value={carParams}>
-        <div>{SCREENS[getCurrentScreenName()]({ bluetoothAdapter, logs, setCurrentScreenName })}</div>
+        <div>{SCREENS[getCurrentScreenName()]({ bluetoothAdapter, logs, setCurrentScreenName, goToMainScreen })}</div>
       </CarLiveDataContext.Provider>
     </div>
   );

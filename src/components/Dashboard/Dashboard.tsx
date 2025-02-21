@@ -11,7 +11,7 @@ const durationOptions: KeyframeAnimationOptions = {
   fill: "both",
 };
 
-export const Dashboard: Component = () => {
+export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
   let lineLength = 0;
   let coolantTemperature: SVGRectElement | undefined;
   let oilTemperature: SVGRectElement | undefined;
@@ -22,8 +22,6 @@ export const Dashboard: Component = () => {
   let oilTemperatureSpan: SVGTSpanElement | undefined;
 
   const carLiveData = useContext(CarLiveDataContext);
-
-  console.log({ carLiveData });
 
   onMount(() => {
     if (!revValue || !speedSpan) return;
@@ -121,7 +119,10 @@ export const Dashboard: Component = () => {
   });
 
   return (
-    <div class={styles.App}>
+    <div class={styles.Dashboard}>
+      <button class={styles.GoToMainScreenButton} onClick={props.goToMainScreen}>
+        {"<<<"}
+      </button>
       <div class={styles.DashContainer}>
         <svg viewBox="0 0 169.33333 127" version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg">
           <defs id="defs1">

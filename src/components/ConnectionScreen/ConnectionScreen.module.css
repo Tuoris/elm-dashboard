@@ -2,9 +2,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    height: 90vh;
     flex-direction: column;
     padding: 0.5rem;
+}
+
+.LinkWrapper {
+    padding: 0.5rem;
+    align-self: flex-start;
 }
 
 .ConnectionLogs {
@@ -12,15 +17,15 @@
     padding: 0.4rem;
     border: 1px solid rgb(126, 126, 126);
     align-self: normal;
-    overflow: visible;
+    overflow: auto;
     text-wrap: auto;
-
+    flex-grow: 1;
     font-size: 0.9rem;
 
     border-radius: 0;
 
     &>* {
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.2rem;
     }
 }
 

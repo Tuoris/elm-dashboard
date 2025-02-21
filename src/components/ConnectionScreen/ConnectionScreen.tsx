@@ -1,4 +1,4 @@
-import { Accessor, Component, createSignal, For, Setter } from "solid-js";
+import { Accessor, Component, createSignal, For, Setter, Show } from "solid-js";
 import { Elm327BluetoothAdapter } from "../../features/Bluetooth/Bluetooth";
 import styles from "./ConnectionScreen.module.css";
 import { Logs, ScreenName } from "../../types/common";
@@ -26,14 +26,19 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
 
   return (
     <div class={styles.ConnectionScreen}>
-      <button class={styles.ActionButton} onClick={connect}>
-        З'єднатись з ELM 327
-      </button>
+      <div class={styles.LinkWrapper}>
+        <a href="https://utils.tupychak.com.ua/"> ← На головну </a>
+      </div>
       <pre class={styles.ConnectionLogs}>
         <For each={props.logs()}>
           {(log) => <div class={classNameByLogLevel[log?.level || "info"]}>{log.message}</div>}
         </For>
       </pre>
+      <div>
+        <button class={styles.ActionButton} onClick={connect}>
+          З'єднатись з ELM 327
+        </button>
+      </div>
     </div>
   );
 };

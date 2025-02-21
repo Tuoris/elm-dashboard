@@ -1,8 +1,34 @@
+.Dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    height: 96vh;
+}
+
 .DashContainer {
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
     height: auto;
     overflow: hidden;
     aspect-ratio: 640 / 479;
+}
+
+@media (orientation: landscape) {
+    .DashContainer {
+        margin-top: -80px;
+    }
+}
+
+.GoToMainScreenButton {
+    top: 0;
+    left: 0;
+    position: absolute;
+    background: transparent;
+    opacity: 0.5;
+    color: var(--accent);
+}
+
+.GoToMainScreenButton:hover {
+    opacity: 1;
 }

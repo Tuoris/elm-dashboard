@@ -4,7 +4,7 @@ import { CONFIGS, COMMANDS } from "./Bluetooth.constants";
 import { Deferred, signedIntFromBytes, unsignedIntFromBytes } from "./Bluetooth.utils";
 
 function consoleLoggerHandler(string: string, level: string = "info") {
-  console.log(`${level}: ${string}`);
+  console.log(`${new Date().toISOString()}: ${string}`);
 }
 
 export class Elm327BluetoothAdapter {
@@ -16,7 +16,7 @@ export class Elm327BluetoothAdapter {
   sendSignal: Deferred = new Deferred();
 
   logHandlers = [consoleLoggerHandler];
-  log(message: string, level: string = "info") {
+  log(message: string, level: string = "debug") {
     for (const logHandler of this.logHandlers) {
       logHandler(message, level);
     }
@@ -89,7 +89,9 @@ export class Elm327BluetoothAdapter {
       this.receiveValue(rawValue);
     });
 
-    await this.sendData("ATZ");
+    await this.sendData("AT Z");
+    await this.sendData("AT E=0");
+    await this.sendData("AT ST=96");
     await this.sendData("0100");
 
     this.log("Підписку створено - готовий до роботи.");
@@ -147,7 +149,7 @@ export class Elm327BluetoothAdapter {
 
     const handler = handlers[this.currentCommand];
     if (handler) {
-      return handler(value);
+      return handler.bind(this)(value);
     }
 
     return this.defaultHandler(value);
