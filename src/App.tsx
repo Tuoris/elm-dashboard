@@ -41,7 +41,7 @@ const App: Component = () => {
   console.log([carParams, setCarParams]);
   console.log(bluetoothAdapter);
 
-  const timeoutBetweenCommands = 100;
+  const timeoutBetweenCommands = 700;
   const busyTimeout = 100;
 
   const mainLoop = async () => {

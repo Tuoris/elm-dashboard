@@ -436,7 +436,7 @@ export class Elm327BluetoothAdapter {
       const sohByteA = separatePacketBytes[3][1];
       const sohByteB = separatePacketBytes[3][2];
 
-      const sohValue = unsignedIntFromBytes([sohByteA, sohByteB]);
+      const sohValue = unsignedIntFromBytes([sohByteA, sohByteB]) / 10;
 
       this.log(`Інформація з BMS #5 Kia Niro:`, "info");
       this.log(`- здоров'я акумулятора (SOH): ${sohValue} %`, "info");
