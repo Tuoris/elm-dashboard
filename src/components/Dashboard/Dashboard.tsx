@@ -20,11 +20,12 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
   let speedSpan: SVGTSpanElement | undefined;
   let coolantTemperatureSpan: SVGTSpanElement | undefined;
   let oilTemperatureSpan: SVGTSpanElement | undefined;
+  let rpmSpan: SVGTSpanElement | undefined;
 
   const carLiveData = useContext(CarLiveDataContext);
 
   onMount(() => {
-    if (!revValue || !speedSpan) return;
+    if (!revValue || !speedSpan || !rpmSpan) return;
 
     lineLength = revValue.getTotalLength();
     revValue.style.strokeDasharray = lineLength + " " + lineLength;
@@ -47,6 +48,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
       const relativeValue = carLiveData.rpm / 7000;
       updateAnimationProgress(animation, relativeValue);
       speedSpan.innerHTML = `${carLiveData.vehicleSpeed.toFixed()}`;
+      rpmSpan.innerHTML = carLiveData.rpm.toFixed();
       requestAnimationFrame(updateValue);
     };
 
@@ -143,6 +145,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
           </defs>
           <rect
             style="fill:#2a7fff;fill-opacity:1;stroke:none;stroke-width:2.1158;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:17583.1;stroke-opacity:1;paint-order:stroke fill markers"
+            id="coolantTemperature"
             ref={coolantTemperature}
             width="11.877826"
             height="51.961636"
@@ -152,6 +155,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
           />
           <rect
             style="fill:#ff2a2a;fill-opacity:1;stroke:none;stroke-width:2.1158;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:17583.1;stroke-opacity:1;paint-order:stroke fill markers"
+            id="oilTemperature"
             ref={oilTemperature}
             width="10.165843"
             height="53.211285"
@@ -163,6 +167,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
           <path
             style="display:inline;fill:none;fill-opacity:1;stroke:#ff2a2a;stroke-width:14;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:4652.2;stroke-opacity:1;paint-order:stroke fill markers"
             d="M 58.470472,94.414988 72.552448,59.176244 C 76.835164,47.706769 75.710636,47.510142 97.347986,47.535738 l 50.636334,-0.130114"
+            id="revValue"
             ref={revValue}
           />
           <path
@@ -186,26 +191,40 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
             d="m 39.614024,95.267481 c -0.150466,0 -0.271647,0.121176 -0.271647,0.271647 v 3.089115 c -0.125348,0.08814 -0.20005,0.231675 -0.200438,0.384928 4e-6,0.26072 0.211363,0.472076 0.472085,0.472076 0.260722,0 0.472082,-0.211356 0.472086,-0.472076 -4e-5,-0.153615 -0.07487,-0.29761 -0.200519,-0.385988 v -0.543369 h 1.256036 v -0.392869 h -1.256036 v -0.453717 h 1.256036 v -0.392865 h -1.256036 v -0.457197 h 1.256036 v -0.392865 h -1.256036 v -0.455173 c 0,-0.150468 -0.121096,-0.271647 -0.271567,-0.271647 z m -3.170596,2.698591 -0.283299,1.108359 1.579228,0.548706 0.0114,1.271413 3.628278,0.004 1.756282,-2.042569 c 0.149163,-0.04749 0.310227,-0.09887 0.34763,-0.110941 l 0.20149,0.180779 0.229651,-0.255876 -0.347793,-0.31211 -0.09402,0.03032 c 0,0 -0.810931,0.261509 -1.322066,0.412534 -0.410251,0.12127 -1.163783,0.326204 -1.495963,0.416334 -0.0281,0.14459 -0.086,0.281746 -0.170012,0.402726 0.01623,-0.004 1.245201,-0.336166 1.763483,-0.489306 0.08453,-0.025 0.176802,-0.0533 0.267764,-0.081 l -1.294149,1.505089 -3.129812,-0.003 -0.01207,-1.338339 0.491507,-10e-4 -8.2e-5,-0.0192 c -0.01047,-0.05858 -0.01599,-0.117942 -0.01651,-0.17745 6.2e-5,-0.04928 0.0036,-0.09849 0.01046,-0.14728 l -0.488513,0.0013 -0.0032,-0.354354 z m 0.241465,0.444005 1.046697,0.352328 0.0044,0.495536 -1.164434,-0.404583 z m 6.999716,1.03577 c -0.07092,-2.1e-4 -0.128595,0.0571 -0.128823,0.12797 l -9.7e-4,0.16136 c -0.0028,0.11161 -0.02332,0.21147 -0.07744,0.305553 -0.01478,0.0306 -0.02283,0.0644 -0.0229,0.0993 -2.7e-5,0.12637 0.102436,0.2289 0.228841,0.22892 0.126408,-2e-5 0.228867,-0.10249 0.228841,-0.22892 0,-0.0327 -0.007,-0.0645 -0.01999,-0.0935 -0.0583,-0.0906 -0.07037,-0.201163 -0.08052,-0.307103 l 0.001,-0.16474 c 2.04e-4,-0.071 -0.05715,-0.12865 -0.128099,-0.12879 z"
           />
           <text
-            style='       font-style: normal;       font-variant: normal;       font-weight: normal;       font-stretch: normal;       font-size: 18.2314px;       font-family: Consolas;       -inkscape-font-specification: "Open Sans";       text-align: end;       writing-mode: lr-tb;       direction: ltr;       text-anchor: start;       fill: #f2f2f2;       fill-opacity: 0.844653;       stroke-width: 15.1928;       stroke-linejoin: round;       stroke-dashoffset: 17583.1;       paint-order: stroke fill markers;     '
+            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.2314px;font-family:Consolas;-inkscape-font-specification:'Open Sans';text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f2f2f2;fill-opacity:0.844653;stroke-width:15.1928;stroke-linejoin:round;stroke-dashoffset:17583.1;paint-order:stroke fill markers"
             x="93.454964"
             y="81.488785"
-            id="text1"
+            id="speedSpan"
+            ref={speedSpan}
           >
             <tspan
-              id="speedSpan"
-              ref={speedSpan}
-              style='         font-style: normal;         font-variant: normal;         font-weight: normal;         font-stretch: normal;         -inkscape-font-specification: "Open Sans";         text-align: end;         text-anchor: end;         stroke-width: 15.1928;       '
+              id="tspan3"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Consolas;-inkscape-font-specification:Consolas;text-align:end;text-anchor:end;stroke-width:15.1928"
               x="123.45496"
               y="81.488785"
             >
-              &#10; 320&#10;{" "}
+              {carLiveData.vehicleSpeed}
+            </tspan>
+          </text>
+          <text
+            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Consolas;-inkscape-font-specification:'Open Sans';text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#ff2a2a;stroke-width:1;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:17583.1;stroke-opacity:1;paint-order:stroke fill markers"
+            x="112.82273"
+            y="49.711357"
+            id="rpmSpan"
+          >
+            <tspan
+              ref={rpmSpan}
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Gadugi;-inkscape-font-specification:Gadugi;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:#ff2a2a;stroke-width:1;stroke-dasharray:none;stroke-opacity:1"
+              x="142.82275"
+              y="50.211357"
+            >
+              6500
             </tspan>
           </text>
           <text
             style='       font-style: normal;       font-variant: normal;       font-weight: normal;       font-stretch: normal;       font-size: 4.13432px;       font-family: Consolas;       -inkscape-font-specification: "Open Sans";       text-align: end;       writing-mode: lr-tb;       direction: ltr;       text-anchor: start;       fill: #f9f9f9;       fill-opacity: 0.844653;       stroke-width: 3.44526;       stroke-linejoin: round;       stroke-dashoffset: 17583.1;       paint-order: stroke fill markers;     '
             x="38.912659"
             y="106.2525"
-            id="text1-5"
           >
             <tspan
               id="oilTemperatureSpan"
@@ -214,23 +233,22 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
               x="45.71574"
               y="106.2525"
             >
-              &#10; 140°C&#10;{" "}
+              140°C
             </tspan>
           </text>
           <text
             style='       font-style: normal;       font-variant: normal;       font-weight: normal;       font-stretch: normal;       font-size: 4.13432px;       font-family: Consolas;       -inkscape-font-specification: "Open Sans";       text-align: end;       writing-mode: lr-tb;       direction: ltr;       text-anchor: start;       fill: #f9f9f9;       fill-opacity: 0.844653;       stroke-width: 3.44526;       stroke-linejoin: round;       stroke-dashoffset: 17583.1;       paint-order: stroke fill markers;     '
             x="17.990339"
             y="106.2525"
-            id="text1-5-4"
           >
             <tspan
-              ref={coolantTemperatureSpan}
               id="coolantTemperatureSpan"
+              ref={coolantTemperatureSpan}
               style='         font-style: normal;         font-variant: normal;         font-weight: normal;         font-stretch: normal;         -inkscape-font-specification: "Open Sans";         text-align: end;         text-anchor: end;         stroke-width: 3.44526;         fill: #f9f9f9;       '
               x="24.793421"
               y="106.2525"
             >
-              &#10; 140°C&#10;{" "}
+              140°C
             </tspan>
           </text>
           <text
@@ -245,7 +263,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
               x="13.229364"
               y="92.309402"
             >
-              10
+              &#10; 10&#10;{" "}
             </tspan>
           </text>
           <text
@@ -260,7 +278,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
               x="99.250504"
               y="90.699226"
             >
-              &#10; км/год&#10;{" "}
+              &#10; &#10; км/год&#10;&#10;{" "}
             </tspan>
           </text>
           <path
@@ -280,7 +298,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
               x="15.591823"
               y="84.319786"
             >
-              30
+              &#10; 30&#10;{" "}
             </tspan>
           </text>
           <path
@@ -300,7 +318,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
               x="18.146791"
               y="76.619194"
             >
-              50
+              &#10; 50&#10;{" "}
             </tspan>
           </text>
           <path
@@ -320,7 +338,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
               x="22.093245"
               y="64.603737"
             >
-              80
+              &#10; 80&#10;{" "}
             </tspan>
           </text>
           <path
@@ -340,7 +358,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
               x="26.147411"
               y="52.32679"
             >
-              110
+              &#10; 110&#10;{" "}
             </tspan>
           </text>
           <path
@@ -366,7 +384,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="51.591824"
                 y="107.61195"
               >
-                10
+                &#10; 10&#10;{" "}
               </tspan>
             </text>
             <path
@@ -386,7 +404,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="53.954281"
                 y="99.622337"
               >
-                30
+                &#10; 30&#10;{" "}
               </tspan>
             </text>
             <path
@@ -406,7 +424,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="56.509251"
                 y="91.921745"
               >
-                50
+                &#10; 50&#10;{" "}
               </tspan>
             </text>
             <path
@@ -426,7 +444,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="60.455704"
                 y="79.906288"
               >
-                80
+                &#10; 80&#10;{" "}
               </tspan>
             </text>
             <path
@@ -446,7 +464,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="64.509872"
                 y="67.629341"
               >
-                110
+                &#10; 110&#10;{" "}
               </tspan>
             </text>
             <path
@@ -478,7 +496,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="55.341404"
                 y="78.623436"
               >
-                1000
+                &#10; 1000&#10;{" "}
               </tspan>
             </text>
             <path
@@ -500,7 +518,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="55.341404"
                 y="78.623436"
               >
-                2000
+                &#10; 2000&#10;{" "}
               </tspan>
             </text>
             <path
@@ -522,7 +540,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="57.013184"
                 y="77.103638"
               >
-                3000
+                &#10; 3000&#10;{" "}
               </tspan>
             </text>
             <path
@@ -544,7 +562,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="57.013184"
                 y="77.103638"
               >
-                4000
+                &#10; 4000&#10;{" "}
               </tspan>
             </text>
             <path
@@ -566,7 +584,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="57.013184"
                 y="77.103638"
               >
-                6000
+                &#10; 6000&#10;{" "}
               </tspan>
             </text>
             <path
@@ -588,7 +606,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="55.621464"
                 y="76.354973"
               >
-                7000
+                &#10; 7000&#10;{" "}
               </tspan>
             </text>
             <path
@@ -610,7 +628,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
                 x="57.013184"
                 y="77.103638"
               >
-                5000
+                &#10; 5000&#10;{" "}
               </tspan>
             </text>
             <path
