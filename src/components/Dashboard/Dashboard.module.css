@@ -22,7 +22,7 @@
 
 .GoToMainScreenButton {
     top: 0;
-    left: 0;
+    left: 0.5rem;
     position: absolute;
     background: transparent;
     opacity: 0.5;
@@ -31,4 +31,6 @@
 
 .GoToMainScreenButton:hover {
     opacity: 1;
+    color: initial;
+    background: var(--accent);
 }

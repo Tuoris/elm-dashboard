@@ -1,4 +1,4 @@
-import { Accessor, Component, createSignal, For, Setter, Show } from "solid-js";
+import { Accessor, Component, createSignal, For, Match, Setter, Switch } from "solid-js";
 import { Elm327BluetoothAdapter } from "../../features/Bluetooth/Bluetooth";
 import styles from "./ConnectionScreen.module.css";
 import { Logs, ScreenName } from "../../types/common";
@@ -17,9 +17,12 @@ const classNameByLogLevel: Record<string, string> = {
 };
 
 export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
+  const [isConnected, setIsConnected] = createSignal(false);
+
   const connect = async () => {
     const isProperlyConnected = await props.bluetoothAdapter.connect();
     if (isProperlyConnected) {
+      setIsConnected(true);
       props.setCurrentScreenName("dashboard");
     }
   };
@@ -35,9 +38,18 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
         </For>
       </pre>
       <div>
-        <button class={styles.ActionButton} onClick={connect}>
-          З'єднатись з ELM 327
-        </button>
+        <Switch>
+          <Match when={isConnected()}>
+            <button class={styles.ActionButton} onClick={() => props.setCurrentScreenName("dashboard")}>
+              Продовжити
+            </button>
+          </Match>
+          <Match when={!isConnected()}>
+            <button class={styles.ActionButton} onClick={connect}>
+              З'єднатись з ELM 327
+            </button>
+          </Match>
+        </Switch>
       </div>
     </div>
   );
