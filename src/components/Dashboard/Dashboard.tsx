@@ -120,15 +120,35 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
     setTimeout(() => requestAnimationFrame(updateValue), ANIMATION_DURATION);
   });
 
+  const [isFullscreen, setIsFullscreen] = createSignal(false);
+  let dashboardRef: HTMLDivElement | undefined;
+
+  const toggleFullscreen = () => {
+    if (!dashboardRef) return;
+
+    if (!isFullscreen()) {
+      dashboardRef.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
   return (
-    <div class={styles.Dashboard}>
-      <button
-        class={styles.GoToMainScreenButton}
-        onClick={props.goToMainScreen}
-        aria-label="Повернутись до головного екрану"
-      >
-        {"❮"}
-      </button>
+    <div class={styles.Dashboard} ref={dashboardRef}>
+      <div class={styles.TopControlButtons}>
+        <button
+          class={styles.ControlButton}
+          onClick={props.goToMainScreen}
+          aria-label="Повернутись до головного екрану"
+        >
+          {"❮"}
+        </button>
+        <button class={styles.ControlButton} onClick={toggleFullscreen} aria-label="Розгорнути на повний екран">
+          {"⛶"}
+        </button>
+      </div>
       <div class={styles.DashContainer}>
         <svg viewBox="0 0 169.33333 127" version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg">
           <defs id="defs1">

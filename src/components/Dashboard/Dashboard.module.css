@@ -5,6 +5,7 @@
     position: relative;
     justify-content: center;
     height: 96vh;
+    background-color: #24211f;
 }
 
 .DashContainer {
@@ -20,16 +21,24 @@
     }
 }
 
-.GoToMainScreenButton {
+.TopControlButtons {
+    display: flex;
+    justify-content: space-between;
     top: 0;
-    left: 0.5rem;
     position: absolute;
+    align-self: normal;
+    padding-inline: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.ControlButton {
     background: transparent;
     opacity: 0.5;
     color: var(--accent);
 }
 
-.GoToMainScreenButton:hover {
+.ControlButton:hover {
     opacity: 1;
     color: initial;
     background: var(--accent);
