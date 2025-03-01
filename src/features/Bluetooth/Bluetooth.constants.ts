@@ -12,9 +12,9 @@ export const COMMANDS = {
   CONTROL_MODULE_VOLTAGE: "0142",
   ENGINE_FUEL_RATE: "015E",
   EXTENDED_TIMEOUT: "AT ST96",
-  KIA_NIRO_BMS_INFO_01: "220101",
-  KIA_NIRO_BMS_INFO_05: "220105",
-  KIA_NIRO_ABS_INFO: "22C101",
+  HYUNDAI_KONA_BMS_INFO_01: "220101",
+  HYUNDAI_KONA_BMS_INFO_05: "220105",
+  HYUNDAI_KONA_ABS_INFO: "22C101",
 };
 
 export const COMMAND_LABELS = {
@@ -31,9 +31,9 @@ export const COMMAND_LABELS = {
   [COMMANDS.CONTROL_MODULE_VOLTAGE]: "Напруга на ЕБУ",
   [COMMANDS.ENGINE_FUEL_RATE]: "Витрата пального",
   [COMMANDS.EXTENDED_TIMEOUT]: "Збільшити час відповіді",
-  [COMMANDS.KIA_NIRO_BMS_INFO_01]: "Kia Niro інформація з BMS #1",
-  [COMMANDS.KIA_NIRO_BMS_INFO_05]: "Kia Niro інформація з BMS #5",
-  [COMMANDS.KIA_NIRO_ABS_INFO]: "Kia Niro інформація з ABS #1",
+  [COMMANDS.HYUNDAI_KONA_BMS_INFO_01]: "Kia Niro інформація з BMS #1",
+  [COMMANDS.HYUNDAI_KONA_BMS_INFO_05]: "Kia Niro інформація з BMS #5",
+  [COMMANDS.HYUNDAI_KONA_ABS_INFO]: "Kia Niro інформація з ABS #1",
 };
 
 export const CONFIGS = [

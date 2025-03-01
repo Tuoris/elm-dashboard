@@ -8,4 +8,4 @@ export type CarLiveDataType = {
 export type Logs = { message: string; level?: string }[];
 
 export type ScreenName = "connectionScreen" | "dashboard";
-export type DeferredValue = string | number | boolean;
+export type DeferredValue = string | number | boolean | undefined | null;

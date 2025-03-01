@@ -1,5 +1,6 @@
 /// <reference types="web-bluetooth" />
 
+import { DeferredValue } from "../../types/common";
 import { CONFIGS, COMMANDS } from "./Bluetooth.constants";
 import { Deferred, signedIntFromBytes, unsignedIntFromBytes } from "./Bluetooth.utils";
 
@@ -92,6 +93,7 @@ export class Elm327BluetoothAdapter {
     await this.sendData("AT Z");
     await this.sendData("AT E=0");
     await this.sendData("AT ST=96");
+    await this.sendData("AT AL");
     await this.sendData("0100");
 
     this.log("Підписку створено - готовий до роботи.");
@@ -100,35 +102,66 @@ export class Elm327BluetoothAdapter {
     return this.isConnected;
   }
 
+  receiveBuffer = "";
+  pendingCommandPromise: Promise<unknown> | null = null;
+  isPendingCommand = false;
+  responseResolve: null | ((value: DeferredValue) => void) = null;
+
   receiveValue(rawValue: DataView) {
     const rawBytes = Array.from(new Int8Array(rawValue.buffer)).map((n) => n.toString(16).padStart(2, "0"));
     console.log(`Raw bytes: ${rawBytes.join(" ")}`);
     const value = new TextDecoder().decode(rawValue).trim();
     this.log(`Отримано: ${value}`);
-    const result = this.parseResponse(value);
-    if (result) {
-      this.sendSignal.resolve(result);
+
+    this.receiveBuffer += value;
+
+    if (value.includes(">")) {
+      console.timeEnd(this.currentCommand);
+      const result = this.parseResponse(this.receiveBuffer);
+      if (this.responseResolve) {
+        this.responseResolve(result);
+      }
+
+      this.receiveBuffer = "";
+      this.isPendingCommand = false;
     }
   }
 
-  sendData(data: string) {
+  async sendData(data: string) {
     if (!this.writeCharacteristic) {
       this.log(`Спроба надіслати команду: ${data} - відсутнє підключення.`, "error");
       return;
     }
 
-    this.sendSignal = new Deferred();
+    console.time(`${data.trim()}`);
+
+    if (this.isPendingCommand && this.pendingCommandPromise) {
+      this.log("Очікую на відповідь на попередню команду...");
+      const timeout = setTimeout(() => {
+        this.log("Відповідь від попередньої команди не отримано протягом 1 секунди - її буде скасовано!", "error");
+        if (this.responseResolve) {
+          this.responseResolve(null);
+        }
+      }, 1000);
+      await this.pendingCommandPromise;
+      clearTimeout(timeout);
+    }
 
     if (data) {
       this.log(`Надсилання: ${data}`);
       this.writeCharacteristic.writeValue(new TextEncoder().encode(data + "\r"));
+      this.isPendingCommand = true;
       this.currentCommand = data.trim();
     }
 
-    return this.sendSignal.promise;
+    this.pendingCommandPromise = new Promise((resolve) => {
+      this.responseResolve = resolve;
+    });
+
+    return this.pendingCommandPromise;
   }
 
-  parseResponse(value: string) {
+  parseResponse(value: string): DeferredValue {
     const handlers = {
       [COMMANDS.VIN]: this.parseVINResponse,
       [COMMANDS.MONITOR_STATUS_SINCE_DTCS_CLEARED]: this.parseMonitorStatusSinceDtcsCleared,
@@ -142,14 +175,14 @@ export class Elm327BluetoothAdapter {
       [COMMANDS.FUEL_TANK_LEVEL]: this.parseFuelTankLevel,
       [COMMANDS.ENGINE_FUEL_RATE]: this.parseEngineFuelRate,
       [COMMANDS.CONTROL_MODULE_VOLTAGE]: this.parseControlModuleVoltage,
-      [COMMANDS.KIA_NIRO_BMS_INFO_01]: this.parseKiaNiroBmsInfo01,
-      [COMMANDS.KIA_NIRO_BMS_INFO_05]: this.parseKiaNiroBmsInfo05,
-      [COMMANDS.KIA_NIRO_ABS_INFO]: this.parseKiaNiroAbsInfo,
+      [COMMANDS.HYUNDAI_KONA_BMS_INFO_01]: this.parseHyundaiKonaBmsInfo01,
+      [COMMANDS.HYUNDAI_KONA_BMS_INFO_05]: this.parseHyundaiKonaBmsInfo05,
     };
 
     const handler = handlers[this.currentCommand];
     if (handler) {
-      return handler.bind(this)(value);
+      const adaptedValue = this.adaptValueForCommand(value, this.currentCommand);
+      return handler.bind(this)(adaptedValue) as any as number;
     }
 
     return this.defaultHandler(value);
@@ -159,6 +192,34 @@ export class Elm327BluetoothAdapter {
     if (value.includes(">")) {
       return true;
     }
+  }
+
+  adaptValueForCommand(value: string, currentCommand: string) {
+    let adaptedValue = value;
+
+    if (!(currentCommand.startsWith("01") || currentCommand.startsWith("09"))) {
+      return adaptedValue;
+    }
+
+    adaptedValue = value.replaceAll(/\s/g, "").replaceAll(">", "");
+
+    const commandResponseSuccessHeader = currentCommand.replaceAll(/\s/g, "").replace(/^01/, "41").replace(/^09/, "49");
+
+    console.log(adaptedValue, commandResponseSuccessHeader);
+
+    if (!adaptedValue.includes(commandResponseSuccessHeader)) {
+      return `<Invalid response> ${value}`;
+    }
+
+    const startDataIndex = adaptedValue.indexOf(commandResponseSuccessHeader);
+    const dataSlice = adaptedValue.slice(startDataIndex);
+    const chunks = [];
+    for (let index = 0; index < Math.ceil(dataSlice.length / 2); index++) {
+      const currentSlice = dataSlice.slice(index * 2, (index + 1) * 2);
+      chunks.push(currentSlice);
+    }
+
+    return chunks.join(" ");
   }
 
   parseMonitorStatusSinceDtcsCleared(value: string) {
@@ -353,8 +414,8 @@ export class Elm327BluetoothAdapter {
     return rateValue;
   }
 
-  parseBmsInfoBuffer(buffer: string[]) {
-    const joinedBuffer = buffer.join("").replaceAll("\n", "");
+  parseBmsInfoBuffer(buffer: string) {
+    const joinedBuffer = buffer.replaceAll("\n", "");
 
     const numberedPackets = Array.from(joinedBuffer.matchAll(/\d\:(\s[0-9A-F][0-9A-F]){7}/gm).map((match) => match[0]));
 
@@ -363,117 +424,74 @@ export class Elm327BluetoothAdapter {
     return packets;
   }
 
-  bmsInfoBuffer01: string[] = [];
+  parseHyundaiKonaBmsInfo01(value: string) {
+    const separatePacketBytes = this.parseBmsInfoBuffer(value);
 
-  parseKiaNiroBmsInfo01(value: string) {
-    if (value.includes(">")) {
-      const separatePacketBytes = this.parseBmsInfoBuffer(this.bmsInfoBuffer01);
+    console.table(separatePacketBytes);
 
-      console.table(separatePacketBytes);
-
-      if (separatePacketBytes.length !== 8) {
-        this.bmsInfoBuffer01 = [];
-        this.log(
-          `Помилка при отриманні інформації з BMS #1 Kia Niro - неправильна кількість пакетів: ${separatePacketBytes.length}.`
-        );
-        return "<parseKiaNiroBmsInfo error>";
-      }
-
-      console.table(separatePacketBytes);
-
-      const batteryCurrentValue = signedIntFromBytes(separatePacketBytes[1].slice(0, 2)) / 10;
-      const batteryVoltageValue = signedIntFromBytes(separatePacketBytes[1].slice(2, 4)) / 10;
-      const batteryPower = batteryCurrentValue * batteryVoltageValue;
-
-      const battery12VVoltage = unsignedIntFromBytes(separatePacketBytes[3][5]) / 10;
-
-      const socValue = unsignedIntFromBytes(separatePacketBytes[0][1]) / 2;
-
-      const maxRegenValue = unsignedIntFromBytes(separatePacketBytes[0].slice(2, 4)) / 100;
-
-      const maxPowerValue = unsignedIntFromBytes(separatePacketBytes[0].slice(4, 6)) / 100;
-
-      const batteryMaxT = signedIntFromBytes(separatePacketBytes[1][4]);
-      const batteryMinT = signedIntFromBytes(separatePacketBytes[1][5]);
-
-      const maxCellVoltageValue = (unsignedIntFromBytes(separatePacketBytes[2][6]) * 2) / 100;
-      const minCellVoltageValue = (unsignedIntFromBytes(separatePacketBytes[3][1]) * 2) / 100;
-
-      this.log(`Інформація з BMS #1 Kia Niro:`, "info");
-      this.log(`- рівень заряду: ${socValue} %`, "info");
-      this.log(`- доступна потужність рекуперації: ${maxRegenValue} кВт`, "info");
-      this.log(`- доступна потужність: ${maxPowerValue} кВт`, "info");
-      this.log(`- температура акумулятора (макс.): ${batteryMaxT} °C`, "info");
-      this.log(`- температура акумулятора (мін.): ${batteryMinT} °C`, "info");
-      this.log(`- мінімальна напруга комірки: ${maxCellVoltageValue} В`, "info");
-      this.log(`- максимальна напруга комірки: ${minCellVoltageValue} В`, "info");
+    if (separatePacketBytes.length !== 9) {
       this.log(
-        `- потужність ${batteryPower > 0 ? "розряджання" : "заряджання"} акумулятора: ${
-          Math.abs(batteryPower) / 1000
-        } кВт`,
-        "info"
+        `Помилка при отриманні інформації з BMS #1 Hyundai Kona - неправильна кількість пакетів: ${separatePacketBytes.length}.`,
+        "error"
       );
-      this.log(
-        `- струм батареї: ${batteryCurrentValue} А / ${batteryCurrentValue > 0 ? "розряджання" : "заряджання"}`,
-        "info"
-      );
-      this.log(`- напруга батареї: ${batteryVoltageValue} В`, "info");
-      this.log(`- напруга 12В батареї: ${battery12VVoltage} В`, "info");
-
-      this.bmsInfoBuffer01 = [];
+      return "<parseHyundaiKonaBmsInfo error>";
     }
 
-    this.bmsInfoBuffer01.push(value);
+    console.table(separatePacketBytes);
+
+    const batteryCurrentValue = signedIntFromBytes(separatePacketBytes[2].slice(0, 2)) / 10;
+    const batteryVoltageValue = signedIntFromBytes(separatePacketBytes[2].slice(2, 4)) / 10;
+    const batteryPower = batteryCurrentValue * batteryVoltageValue;
+
+    const battery12VVoltage = unsignedIntFromBytes(separatePacketBytes[4][5]) / 10;
+
+    const socValue = unsignedIntFromBytes(separatePacketBytes[1][1]) / 2;
+
+    const maxRegenValue = unsignedIntFromBytes(separatePacketBytes[1].slice(2, 4)) / 100;
+
+    const maxPowerValue = unsignedIntFromBytes(separatePacketBytes[1].slice(4, 6)) / 100;
+
+    const batteryMaxT = signedIntFromBytes(separatePacketBytes[2][4]);
+    const batteryMinT = signedIntFromBytes(separatePacketBytes[2][5]);
+
+    const batteryInletT = signedIntFromBytes(separatePacketBytes[3][5]);
+
+    const maxCellVoltageValue = (unsignedIntFromBytes(separatePacketBytes[3][6]) * 2) / 100;
+    const minCellVoltageValue = (unsignedIntFromBytes(separatePacketBytes[4][1]) * 2) / 100;
+
+    this.log(`Інформація з BMS #1 Hyundai Kona:`, "info");
+    this.log(`- рівень заряду: ${socValue} %`, "info");
+    this.log(`- доступна потужність рекуперації: ${maxRegenValue} кВт`, "info");
+    this.log(`- доступна потужність: ${maxPowerValue} кВт`, "info");
+    this.log(`- температура акумулятора (макс.): ${batteryMaxT} °C`, "info");
+    this.log(`- температура акумулятора (мін.): ${batteryMinT} °C`, "info");
+    this.log(`- мінімальна напруга комірки: ${maxCellVoltageValue} В`, "info");
+    this.log(`- максимальна напруга комірки: ${minCellVoltageValue} В`, "info");
+    this.log(
+      `- потужність ${batteryPower > 0 ? "розряджання" : "заряджання"} акумулятора: ${
+        Math.abs(batteryPower) / 1000
+      } кВт`,
+      "info"
+    );
+    this.log(
+      `- струм батареї: ${batteryCurrentValue} А / ${batteryCurrentValue > 0 ? "розряджання" : "заряджання"}`,
+      "info"
+    );
+    this.log(`- напруга батареї: ${batteryVoltageValue} В`, "info");
+    this.log(`- напруга 12В батареї: ${battery12VVoltage} В`, "info");
   }
 
-  bmsInfoBuffer05: string[] = [];
-  parseKiaNiroBmsInfo05(value: string) {
-    if (value.includes(">")) {
-      const separatePacketBytes = this.parseBmsInfoBuffer(this.bmsInfoBuffer05);
+  parseHyundaiKonaBmsInfo05(value: string) {
+    const separatePacketBytes = this.parseBmsInfoBuffer(value);
 
-      const heaterTemp = signedIntFromBytes(separatePacketBytes[2][6]);
+    console.table(separatePacketBytes);
 
-      const sohByteA = separatePacketBytes[3][1];
-      const sohByteB = separatePacketBytes[3][2];
+    const heaterTemp = signedIntFromBytes(separatePacketBytes[2][6]);
 
-      const sohValue = unsignedIntFromBytes([sohByteA, sohByteB]) / 10;
+    const sohValue = unsignedIntFromBytes([separatePacketBytes[3][1], separatePacketBytes[3][2]]) / 10;
 
-      this.log(`Інформація з BMS #5 Kia Niro:`, "info");
-      this.log(`- здоров'я акумулятора (SOH): ${sohValue} %`, "info");
-      this.log(`- температура обігрівача акумулятора: ${heaterTemp} °C`, "info");
-
-      this.bmsInfoBuffer05 = [];
-    }
-
-    this.bmsInfoBuffer05.push(value);
-  }
-
-  absInfoBuffer: string[] = [];
-  // WIP
-  parseKiaNiroAbsInfo(value: string) {
-    console.log(this.absInfoBuffer);
-
-    if (value.includes(">")) {
-      console.log(this.absInfoBuffer);
-
-      const separatePacketBytes = this.parseBmsInfoBuffer(this.absInfoBuffer);
-
-      const speedDisplayValue = unsignedIntFromBytes(separatePacketBytes[1][5]);
-
-      const speedByteA = separatePacketBytes[1][6];
-      const speedByteB = separatePacketBytes[2][1];
-      const speedValue = unsignedIntFromBytes([speedByteA, speedByteB]);
-
-      this.log(`Інформація з ABS Kia Niro:`, "info");
-      for (const line of separatePacketBytes) {
-        this.log(`${line.join(" ")}`, "info");
-      }
-      this.log(`- швидкість (на дисплеї) ${speedDisplayValue}`, "info");
-      this.log(`- швидкість точна ${speedValue}`, "info");
-
-      this.absInfoBuffer = [];
-    }
-
-    this.absInfoBuffer.push(value);
+    this.log(`Інформація з BMS #5 Hyundai Kona:`, "info");
+    this.log(`- здоров'я акумулятора (SOH): ${sohValue} %`, "info");
+    this.log(`- температура обігрівача акумулятора: ${heaterTemp} °C`, "info");
   }
 }
