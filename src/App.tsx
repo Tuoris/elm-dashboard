@@ -41,8 +41,8 @@ const App: Component = () => {
   console.log([carParams, setCarParams]);
   console.log(bluetoothAdapter);
 
-  const timeoutBetweenCommands = 200;
-  const busyTimeout = 100;
+  const timeBetweenCommands = 20;
+  const busyTimeout = 20;
 
   const mainLoop = async () => {
     const loopCommands: [a: Part<CarLiveDataType, keyof CarLiveDataType>, b: string][] = [
@@ -53,7 +53,7 @@ const App: Component = () => {
     ];
     while (true) {
       if (bluetoothAdapter.isConnected) {
-        await sleep(timeoutBetweenCommands / 2);
+        await sleep(timeBetweenCommands / 2);
 
         for (const [param, command] of loopCommands) {
           console.log("sending", command);
@@ -61,7 +61,7 @@ const App: Component = () => {
           setCarParams(param, parseDeferredIntegerValue(value as number));
 
           console.log("received response, wait to next command");
-          await sleep(timeoutBetweenCommands);
+          await sleep(timeBetweenCommands);
           console.log("ready for next command");
         }
       } else {
