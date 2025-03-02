@@ -39,7 +39,7 @@ const App: Component = () => {
 
   const [carParams, setCarParams] = createStore<CarLiveDataType>({
     coolantTemperature: 0,
-    oilTemperature: 0,
+    throttleValue: 0,
     rpm: 0,
     vehicleSpeed: 0,
     socValue: 0,
@@ -68,7 +68,7 @@ const App: Component = () => {
   const mainLoop = async () => {
     const loopCommands: [a: Part<CarLiveDataType, keyof CarLiveDataType>, b: string][] = [
       ["coolantTemperature", COMMANDS.ENGINE_COOLANT_TEMPERATURE],
-      // ["oilTemperature", COMMANDS.ENGINE_OIL_TEMPERATURE],
+      ["throttleValue", COMMANDS.THROTTLE_POSITION],
       ["rpm", COMMANDS.ENGINE_SPEED],
       ["vehicleSpeed", COMMANDS.VEHICLE_SPEED],
     ];

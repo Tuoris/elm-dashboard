@@ -1,6 +1,6 @@
 export type CarLiveDataType = {
   coolantTemperature: number;
-  oilTemperature: number;
+  throttleValue: number;
   rpm: number;
   vehicleSpeed: number;
   socValue: number;

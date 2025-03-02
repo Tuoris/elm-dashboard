@@ -172,6 +172,7 @@ export class Elm327BluetoothAdapter {
       [COMMANDS.VEHICLE_SPEED]: this.parseVehicleSpeed,
       [COMMANDS.INTAKE_AIR_TEMPERATURE]: this.parseIntakeAirTemperature,
       [COMMANDS.MASS_AIR_FLOW_SENSOR]: this.parseMassAirFlowSensorValue,
+      [COMMANDS.THROTTLE_POSITION]: this.parseThrottlePosition,
       [COMMANDS.FUEL_TANK_LEVEL]: this.parseFuelTankLevel,
       [COMMANDS.ENGINE_FUEL_RATE]: this.parseEngineFuelRate,
       [COMMANDS.CONTROL_MODULE_VOLTAGE]: this.parseControlModuleVoltage,
@@ -368,6 +369,20 @@ export class Elm327BluetoothAdapter {
     this.log(`Масова витрата повітря: ${massAirFlowValue.toFixed(2)} г/c`, "info");
 
     return massAirFlowValue;
+  }
+
+  parseThrottlePosition(value: string) {
+    if (!value.startsWith("41 11")) {
+      return;
+    }
+
+    const separateBytes = value.trim().split(" ");
+    console.log({ value, separateBytes });
+    const throttlePositionValue = (unsignedIntFromBytes(separateBytes[2]) * 100) / 255;
+
+    this.log(`Положення дросельної заслінки: ${throttlePositionValue.toFixed(0)} %`, "info");
+
+    return throttlePositionValue;
   }
 
   parseFuelTankLevel(value: string) {
