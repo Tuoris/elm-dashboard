@@ -9,11 +9,15 @@ import { ConnectionScreen } from "./components/ConnectionScreen";
 import { Elm327BluetoothAdapter } from "./features/Bluetooth/Bluetooth";
 import { COMMANDS } from "./features/Bluetooth/Bluetooth.constants";
 import { parseDeferredIntegerValue, sleep } from "./utils";
+import { EvDashboard } from "./components/EvDashboard";
 
 const SCREENS = {
   connectionScreen: ConnectionScreen,
   dashboard: Dashboard,
+  evDashboard: EvDashboard,
 };
+
+const modes = ["ice", "ev"];
 
 const bluetoothAdapter = new Elm327BluetoothAdapter();
 
@@ -31,15 +35,32 @@ const App: Component = () => {
 
   const [getCurrentScreenName, setCurrentScreenName] = createSignal<ScreenName>("connectionScreen");
 
+  const [currentMode, setCurrentMode] = createSignal<"ice" | "ev">("ice");
+
   const [carParams, setCarParams] = createStore<CarLiveDataType>({
     coolantTemperature: 0,
     oilTemperature: 0,
     rpm: 0,
     vehicleSpeed: 0,
+    socValue: 0,
+    batteryPower: 0,
+    maxRegenValue: 0,
+    maxPowerValue: 0,
+    batteryMaxT: 0,
+    batteryMinT: 0,
+    batteryInletT: 0,
+    maxCellVoltageValue: 0,
+    minCellVoltageValue: 0,
+    sohValue: 0,
+    heaterTemp: 0,
   });
 
   console.log([carParams, setCarParams]);
   console.log(bluetoothAdapter);
+
+  createEffect(() => {
+    console.log(currentMode());
+  });
 
   const timeBetweenCommands = 20;
   const busyTimeout = 20;
@@ -55,14 +76,56 @@ const App: Component = () => {
       if (bluetoothAdapter.isConnected) {
         await sleep(timeBetweenCommands / 2);
 
-        for (const [param, command] of loopCommands) {
+        const mode = currentMode();
+
+        if (mode === "ice") {
+          for (const [param, command] of loopCommands) {
+            console.log("sending", command);
+            const value = await bluetoothAdapter.sendData(command);
+            setCarParams(param, parseDeferredIntegerValue(value as number));
+
+            console.log("received response, wait to next command");
+            await sleep(timeBetweenCommands);
+            console.log("ready for next command");
+          }
+        } else {
+          const command = COMMANDS.HYUNDAI_KONA_BMS_INFO_01;
+          const params: Part<CarLiveDataType, keyof CarLiveDataType>[] = [
+            "socValue",
+            "batteryPower",
+            "maxRegenValue",
+            "maxPowerValue",
+            "batteryMaxT",
+            "batteryMinT",
+            "batteryInletT",
+            "maxCellVoltageValue",
+            "minCellVoltageValue",
+          ];
           console.log("sending", command);
           const value = await bluetoothAdapter.sendData(command);
-          setCarParams(param, parseDeferredIntegerValue(value as number));
+          if (typeof value === "string") {
+            await sleep(timeBetweenCommands);
+            continue;
+          }
+          for (const param of params) {
+            setCarParams(param, (value as CarLiveDataType)[param as keyof CarLiveDataType]);
+            await sleep(timeBetweenCommands);
+          }
 
-          console.log("received response, wait to next command");
-          await sleep(timeBetweenCommands);
+          const command2 = COMMANDS.HYUNDAI_KONA_BMS_INFO_05;
+          const params2: Part<CarLiveDataType, keyof CarLiveDataType>[] = ["heaterTemp", "sohValue"];
+          const value2 = await bluetoothAdapter.sendData(command2);
+          if (typeof value2 === "string") {
+            await sleep(timeBetweenCommands);
+            continue;
+          }
+          for (const param of params2) {
+            setCarParams(param, (value2 as CarLiveDataType)[param as keyof CarLiveDataType]);
+            await sleep(timeBetweenCommands);
+          }
+
           console.log("ready for next command");
+          console.log("received response, wait to next command");
         }
       } else {
         await sleep(busyTimeout);
@@ -78,8 +141,22 @@ const App: Component = () => {
 
   return (
     <div class={styles.App}>
+      <select
+        style={{ position: "absolute", right: "1rem", top: "1rem" }}
+        onChange={(event) => setCurrentMode(event.target.value as "ice" | "ev")}
+      >
+        <For each={modes}>{(mode) => <option selected={mode === currentMode()}>{mode}</option>}</For>
+      </select>
       <CarLiveDataContext.Provider value={carParams}>
-        <div>{SCREENS[getCurrentScreenName()]({ bluetoothAdapter, logs, setCurrentScreenName, goToMainScreen })}</div>
+        <div>
+          {SCREENS[getCurrentScreenName()]({
+            bluetoothAdapter,
+            logs,
+            setCurrentScreenName,
+            goToMainScreen,
+            mode: currentMode,
+          })}
+        </div>
       </CarLiveDataContext.Provider>
     </div>
   );

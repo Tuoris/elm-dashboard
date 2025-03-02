@@ -7,6 +7,7 @@ type ConnectionScreenProps = {
   bluetoothAdapter: Elm327BluetoothAdapter;
   logs: Accessor<Logs>;
   setCurrentScreenName: Setter<ScreenName>;
+  mode: Accessor<string>;
 };
 
 const classNameByLogLevel: Record<string, string> = {
@@ -20,7 +21,11 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
   const connect = async () => {
     const isProperlyConnected = await props.bluetoothAdapter.connect();
     if (isProperlyConnected) {
-      props.setCurrentScreenName("dashboard");
+      if (props.mode() === "ev") {
+        props.setCurrentScreenName("evDashboard");
+      } else {
+        props.setCurrentScreenName("dashboard");
+      }
     }
   };
 

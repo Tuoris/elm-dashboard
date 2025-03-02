@@ -1,0 +1,27 @@
+.Dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+    height: 100vh;
+    background-color: #24211f;
+}
+
+.DashContainer {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    aspect-ratio: 640 / 479;
+}
+
+.ParamsContainer {
+    padding: 3rem 3rem 1rem;
+}
+
+.ParamRow {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: space-between
+}

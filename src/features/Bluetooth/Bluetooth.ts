@@ -415,14 +415,19 @@ export class Elm327BluetoothAdapter {
   }
 
   parseBmsInfoBuffer(buffer: string) {
-    const joinedBuffer = buffer.replaceAll("\n", "");
+    const joinedBuffer = buffer.replaceAll("\n", "").replaceAll("\r", "");
 
-    const numberedPackets = Array.from(joinedBuffer.matchAll(/\d\:(\s[0-9A-F][0-9A-F]){7}/gm).map((match) => match[0]));
+    const numberedPackets = Array.from(
+      joinedBuffer.matchAll(/\d\:(\s[0-9A-F][0-9A-F]){6,7}/gm).map((match) => match[0])
+    );
 
     const packets = numberedPackets.map((packet) => packet.split(":")[1].trim().split(" "));
 
     return packets;
   }
+
+  badValue =
+    "2201017F 22 127F 22 12 \r7F 22 12 \r03E \r0: 62 01 01 FF F7 E7 \r1: FF 87 35 DA 3E 1C 832: 00 1E 0E D1 05 04 033: 03 04 04 00 00 03 C14: 03 C1 36 00 00 93 005: 06 C0 E4 00 06 A2 D66: 00 02 8E 5C 00 02 717: 22 01 35 B6 FC 0D 018: 7B 00 00 00 00 03 E8>";
 
   parseHyundaiKonaBmsInfo01(value: string) {
     const separatePacketBytes = this.parseBmsInfoBuffer(value);
@@ -465,6 +470,7 @@ export class Elm327BluetoothAdapter {
     this.log(`- доступна потужність: ${maxPowerValue} кВт`, "info");
     this.log(`- температура акумулятора (макс.): ${batteryMaxT} °C`, "info");
     this.log(`- температура акумулятора (мін.): ${batteryMinT} °C`, "info");
+    this.log(`"- температура охолоджувальної рідини акумулятора: ${batteryInletT} °C`, "info");
     this.log(`- мінімальна напруга комірки: ${maxCellVoltageValue} В`, "info");
     this.log(`- максимальна напруга комірки: ${minCellVoltageValue} В`, "info");
     this.log(
@@ -479,6 +485,21 @@ export class Elm327BluetoothAdapter {
     );
     this.log(`- напруга батареї: ${batteryVoltageValue} В`, "info");
     this.log(`- напруга 12В батареї: ${battery12VVoltage} В`, "info");
+
+    return {
+      batteryCurrentValue,
+      batteryVoltageValue,
+      batteryPower,
+      battery12VVoltage,
+      socValue,
+      maxRegenValue,
+      maxPowerValue,
+      batteryMaxT,
+      batteryMinT,
+      batteryInletT,
+      maxCellVoltageValue,
+      minCellVoltageValue,
+    };
   }
 
   parseHyundaiKonaBmsInfo05(value: string) {
@@ -486,12 +507,21 @@ export class Elm327BluetoothAdapter {
 
     console.table(separatePacketBytes);
 
-    const heaterTemp = signedIntFromBytes(separatePacketBytes[2][6]);
+    if (separatePacketBytes.length < 5) {
+      return "parseHyundaiKonaBmsInfo05 error";
+    }
 
-    const sohValue = unsignedIntFromBytes([separatePacketBytes[3][1], separatePacketBytes[3][2]]) / 10;
+    const heaterTemp = signedIntFromBytes(separatePacketBytes[3][6]);
+
+    const sohValue = unsignedIntFromBytes([separatePacketBytes[4][1], separatePacketBytes[4][2]]) / 10;
 
     this.log(`Інформація з BMS #5 Hyundai Kona:`, "info");
     this.log(`- здоров'я акумулятора (SOH): ${sohValue} %`, "info");
     this.log(`- температура обігрівача акумулятора: ${heaterTemp} °C`, "info");
+
+    return {
+      sohValue,
+      heaterTemp,
+    };
   }
 }
