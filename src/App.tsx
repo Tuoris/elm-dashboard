@@ -17,7 +17,11 @@ const SCREENS = {
   evDashboard: EvDashboard,
 };
 
-const modes = ["ice", "ev"];
+const modes = ["ice", "konaEv"];
+const modeLabels: Record<string, string> = {
+  ice: "ДВЗ",
+  konaEv: "Kona EV",
+};
 
 const bluetoothAdapter = new Elm327BluetoothAdapter();
 
@@ -35,7 +39,8 @@ const App: Component = () => {
 
   const [getCurrentScreenName, setCurrentScreenName] = createSignal<ScreenName>("connectionScreen");
 
-  const [currentMode, setCurrentMode] = createSignal<"ice" | "ev">("ice");
+  const modeFromUrl = new URL(window.location.toString()).searchParams.get("mode");
+  const [currentMode, setCurrentMode] = createSignal<"ice" | "ev">((modeFromUrl as "ice" | "ev") || "ice");
 
   const [carParams, setCarParams] = createStore<CarLiveDataType>({
     coolantTemperature: 0,
@@ -142,10 +147,10 @@ const App: Component = () => {
   return (
     <div class={styles.App}>
       <select
-        style={{ position: "absolute", right: "1rem", top: "1rem" }}
+        style={{ position: "absolute", right: "1rem", top: "1rem", width: "50%" }}
         onChange={(event) => setCurrentMode(event.target.value as "ice" | "ev")}
       >
-        <For each={modes}>{(mode) => <option selected={mode === currentMode()}>{mode}</option>}</For>
+        <For each={modes}>{(mode) => <option selected={mode === currentMode()}>{modeLabels[mode]}</option>}</For>
       </select>
       <CarLiveDataContext.Provider value={carParams}>
         <div>
