@@ -15,13 +15,25 @@
     aspect-ratio: 640 / 479;
 }
 
-.ParamsContainer {
-    padding: 3rem 3rem 1rem;
+.TopControlButtons {
+    display: flex;
+    justify-content: space-between;
+    top: 0;
+    position: absolute;
+    align-self: normal;
+    padding-inline: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-.ParamRow {
-    display: flex;
-    gap: 1rem;
-    width: 100%;
-    justify-content: space-between
+.ControlButton {
+    background: transparent;
+    opacity: 0.5;
+    color: var(--accent);
+}
+
+.ControlButton:hover {
+    opacity: 1;
+    color: initial;
+    background: var(--accent);
 }

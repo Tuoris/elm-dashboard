@@ -40,7 +40,7 @@ const App: Component = () => {
   const [getCurrentScreenName, setCurrentScreenName] = createSignal<ScreenName>("connectionScreen");
 
   const modeFromUrl = new URL(window.location.toString()).searchParams.get("mode");
-  const [currentMode, setCurrentMode] = createSignal<"ice" | "ev">((modeFromUrl as "ice" | "ev") || "ice");
+  const [currentMode, setCurrentMode] = createSignal<"ice" | "konaEv">((modeFromUrl as "ice" | "konaEv") || "ice");
 
   const [carParams, setCarParams] = createStore<CarLiveDataType>({
     coolantTemperature: 0,
@@ -94,6 +94,7 @@ const App: Component = () => {
             console.log("ready for next command");
           }
         } else {
+          await bluetoothAdapter.sendData(COMMANDS.HYUNDAI_KONA_REQUEST_TO_BMS);
           const command = COMMANDS.HYUNDAI_KONA_BMS_INFO_01;
           const params: Part<CarLiveDataType, keyof CarLiveDataType>[] = [
             "socValue",
@@ -126,6 +127,19 @@ const App: Component = () => {
           }
           for (const param of params2) {
             setCarParams(param, (value2 as CarLiveDataType)[param as keyof CarLiveDataType]);
+            await sleep(timeBetweenCommands);
+          }
+
+          await bluetoothAdapter.sendData(COMMANDS.HYUNDAI_KONA_REQUEST_TO_ABS);
+          const value3 = await bluetoothAdapter.sendData(COMMANDS.HYUNDAI_KONA_ABS_INFO_01);
+          if (typeof value3 === "string") {
+            await sleep(timeBetweenCommands);
+            continue;
+          }
+          const params3: Part<CarLiveDataType, keyof CarLiveDataType>[] = ["vehicleSpeed"];
+
+          for (const param of params3) {
+            setCarParams(param, (value3 as CarLiveDataType)[param as keyof CarLiveDataType]);
             await sleep(timeBetweenCommands);
           }
 

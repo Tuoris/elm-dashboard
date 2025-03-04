@@ -21,7 +21,7 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
   const connect = async () => {
     const isProperlyConnected = await props.bluetoothAdapter.connect();
     if (isProperlyConnected) {
-      if (props.mode() === "ev") {
+      if (props.mode() === "konaEv") {
         props.setCurrentScreenName("evDashboard");
       } else {
         props.setCurrentScreenName("dashboard");

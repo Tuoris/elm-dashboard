@@ -178,6 +178,7 @@ export class Elm327BluetoothAdapter {
       [COMMANDS.CONTROL_MODULE_VOLTAGE]: this.parseControlModuleVoltage,
       [COMMANDS.HYUNDAI_KONA_BMS_INFO_01]: this.parseHyundaiKonaBmsInfo01,
       [COMMANDS.HYUNDAI_KONA_BMS_INFO_05]: this.parseHyundaiKonaBmsInfo05,
+      [COMMANDS.HYUNDAI_KONA_ABS_INFO_01]: this.parseHyundaiKonaAbsInfo01,
     };
 
     const handler = handlers[this.currentCommand];
@@ -429,7 +430,7 @@ export class Elm327BluetoothAdapter {
     return rateValue;
   }
 
-  parseBmsInfoBuffer(buffer: string) {
+  parseUdsInfoBuffer(buffer: string) {
     const joinedBuffer = buffer.replaceAll("\n", "").replaceAll("\r", "");
 
     const numberedPackets = Array.from(
@@ -441,11 +442,11 @@ export class Elm327BluetoothAdapter {
     return packets;
   }
 
-  badValue =
+  hyundaiKonaBmsInfo01 =
     "2201017F 22 127F 22 12 \r7F 22 12 \r03E \r0: 62 01 01 FF F7 E7 \r1: FF 87 35 DA 3E 1C 832: 00 1E 0E D1 05 04 033: 03 04 04 00 00 03 C14: 03 C1 36 00 00 93 005: 06 C0 E4 00 06 A2 D66: 00 02 8E 5C 00 02 717: 22 01 35 B6 FC 0D 018: 7B 00 00 00 00 03 E8>";
 
   parseHyundaiKonaBmsInfo01(value: string) {
-    const separatePacketBytes = this.parseBmsInfoBuffer(value);
+    const separatePacketBytes = this.parseUdsInfoBuffer(value);
 
     console.table(separatePacketBytes);
 
@@ -517,8 +518,10 @@ export class Elm327BluetoothAdapter {
     };
   }
 
+  hyundaiKonaBmsInfo05 =
+    "0: 2E 62 01 05 00 00 00 \r1: 90 00 00 00 00 00 00 \r2: 00 00 00 00 00 00 42 \r3: 68 42 68 00 01 50 0E \r4: 00 03 E8 00 00 00 00 \r5: 7D 00 00 BD BD 00 00 \r6: 0E 00 00 00 00 aa aa>";
   parseHyundaiKonaBmsInfo05(value: string) {
-    const separatePacketBytes = this.parseBmsInfoBuffer(value);
+    const separatePacketBytes = this.parseUdsInfoBuffer(value);
 
     console.table(separatePacketBytes);
 
@@ -537,6 +540,34 @@ export class Elm327BluetoothAdapter {
     return {
       sohValue,
       heaterTemp,
+    };
+  }
+
+  hyundaiKonaAbsInfo01 = `02A 
+    0: 62 C1 01 5F D7 E7 
+    1: D0 FF FF 04 FF 02 EB 
+    2: D4 04 04 04 04 FF 7E 
+    3: FF 00 30 F4 00 00 00 
+    4: FF FF 80 C1 07 F2 07 
+    5: F0 00 FF 00 FF 3F FF 
+    6: FF AA AA AA AA AA AA>`;
+
+  parseHyundaiKonaAbsInfo01(value: string) {
+    const separatePacketBytes = this.parseUdsInfoBuffer(value);
+
+    console.table(separatePacketBytes);
+
+    if (separatePacketBytes.length < 5) {
+      return "parseHyundaiKonaAbsInfo01 error";
+    }
+
+    const vehicleSpeed = unsignedIntFromBytes(separatePacketBytes[1][3]);
+
+    this.log(`Інформація з ABS #1 Hyundai Kona:`, "info");
+    this.log(`- швидкість: ${vehicleSpeed} км/год`, "info");
+
+    return {
+      vehicleSpeed,
     };
   }
 }
