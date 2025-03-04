@@ -198,7 +198,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
         </button>
       </div>
       <div class={styles.DashContainer}>
-        <svg viewBox="0 0 169.33333 127" version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="8 20 142 100" version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg">
           <defs id="defs1">
             <filter
               style="color-interpolation-filters: sRGB"
