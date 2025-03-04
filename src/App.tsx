@@ -162,7 +162,7 @@ const App: Component = () => {
     <div class={styles.App}>
       <select
         style={{ position: "absolute", right: "1rem", top: "1rem", width: "50%" }}
-        onChange={(event) => setCurrentMode(event.target.value as "ice" | "ev")}
+        onChange={(event) => setCurrentMode(event.target.value as "ice" | "konaEv")}
       >
         <For each={modes}>{(mode) => <option selected={mode === currentMode()}>{modeLabels[mode]}</option>}</For>
       </select>

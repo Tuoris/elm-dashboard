@@ -110,7 +110,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
   });
 
   onMount(() => {
-    if (!batteryTemperature || !batteryTemperatureSpan) return;
+    if (!batteryTemperature || !batteryTemperatureSpan || !batteryTemperatureDiffSpan) return;
     batteryTemperature.style.y = "96px";
 
     const animationRangeStart = 96;
@@ -136,6 +136,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
       const relativeValue = relativeTemperatureValue(batteryMedT);
       updateAnimationProgress(animation, relativeValue);
       batteryTemperatureSpan.innerHTML = `${batteryMedT}°C`;
+      batteryTemperatureDiffSpan.innerHTML = `${Math.abs(carLiveData.batteryMaxT - carLiveData.batteryMinT)}°C`;
       requestAnimationFrame(updateValue);
     };
 
