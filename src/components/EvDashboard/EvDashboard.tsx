@@ -3,7 +3,7 @@ import { createSignal, For, onMount, useContext, type Component } from "solid-js
 import styles from "./EvDashboard.module.css";
 import { CarLiveDataType } from "../../types/common";
 import { Part } from "solid-js/store";
-import { CarLiveDataContext } from "../../CarLiveDataContext";
+import { CarLiveDataContext } from "../../contexts/CarLiveDataContext";
 import { updateAnimationProgress } from "../Dashboard/Dashboard.helpers";
 
 const ANIMATION_DURATION = 1000;

@@ -1,7 +1,7 @@
 import { createEffect, createSignal, onMount, useContext, type Component } from "solid-js";
 
 import styles from "./Dashboard.module.css";
-import { CarLiveDataContext } from "../../CarLiveDataContext";
+import { CarLiveDataContext } from "../../contexts/CarLiveDataContext";
 import { updateAnimationProgress } from "./Dashboard.helpers";
 
 const ANIMATION_DURATION = 1000;

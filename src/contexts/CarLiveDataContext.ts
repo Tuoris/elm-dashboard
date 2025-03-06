@@ -1,7 +1,7 @@
 import { createContext } from "solid-js";
-import { CarLiveDataType } from "./types/common";
+import { CarLiveDataType } from "../types/common";
 
-export const CarLiveDataContext = createContext<CarLiveDataType>({
+export const DEFAULT_CAR_LIVE_DATA = {
   coolantTemperature: 0,
   throttleValue: 0,
   rpm: 0,
@@ -17,4 +17,8 @@ export const CarLiveDataContext = createContext<CarLiveDataType>({
   minCellVoltageValue: 0,
   sohValue: 0,
   heaterTemp: 0,
-});
+};
+
+export const CarLiveDataContext = createContext<CarLiveDataType>(DEFAULT_CAR_LIVE_DATA);
+
+export const CarLiveDataContextProvider = CarLiveDataContext.Provider;

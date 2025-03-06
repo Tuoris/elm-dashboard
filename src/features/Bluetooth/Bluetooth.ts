@@ -23,6 +23,10 @@ export class Elm327BluetoothAdapter {
     }
   }
 
+  checkWebBluetoothApiAvailable() {
+    return Boolean(navigator?.bluetooth);
+  }
+
   addLogHandler(logHandler: (string: string, level?: string) => void) {
     this.logHandlers.push(logHandler);
   }
@@ -30,7 +34,7 @@ export class Elm327BluetoothAdapter {
   async connect() {
     this.log("Запит будь-якого пристрою Bluetooth, який підтримує сервіс ELM327...");
 
-    if (!navigator?.bluetooth) {
+    if (!this.checkWebBluetoothApiAvailable()) {
       this.log(`Web Bluetooth API не підтримується браузером.`, "error");
       return this.isConnected;
     }

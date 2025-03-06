@@ -1,0 +1,10 @@
+.App {
+  min-height: 100vh;
+}
+
+.DashboardModeSelector {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 50%
+}
