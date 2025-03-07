@@ -1,7 +1,8 @@
 import { Accessor, Component, createEffect, createSignal, For, Match, Setter, Switch } from "solid-js";
 import { Elm327BluetoothAdapter } from "../../features/Bluetooth/Bluetooth";
 import styles from "./ConnectionScreen.module.css";
-import { Logs, ScreenName } from "../../types/common";
+import { Logs, SCREEN_NAMES, ScreenName } from "../../types/common";
+import { DASHBOARD_MODES } from "../../constants/common.constants";
 
 type ConnectionScreenProps = {
   bluetoothAdapter: Elm327BluetoothAdapter;
@@ -18,14 +19,20 @@ const classNameByLogLevel: Record<string, string> = {
 };
 
 export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
+  const setCurrentScreenForMode = () => {
+    if (props.mode() === DASHBOARD_MODES.KONA_EV) {
+      props.setCurrentScreenName(SCREEN_NAMES.EV_DASHBOARD);
+    } else if (props.mode() === DASHBOARD_MODES.KONA_EV_FUTURISTIC) {
+      props.setCurrentScreenName(SCREEN_NAMES.EV_DASHBOARD_2);
+    } else {
+      props.setCurrentScreenName(SCREEN_NAMES.DASHBOARD);
+    }
+  };
+
   const connect = async () => {
     const isProperlyConnected = await props.bluetoothAdapter.connect();
     if (isProperlyConnected) {
-      if (props.mode() === "konaEv") {
-        props.setCurrentScreenName("evDashboard");
-      } else {
-        props.setCurrentScreenName("dashboard");
-      }
+      setCurrentScreenForMode();
     }
   };
 
@@ -42,7 +49,7 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
       <div>
         <Switch>
           <Match when={props.bluetoothAdapter.isConnected}>
-            <button class={styles.ActionButton} onClick={() => props.setCurrentScreenName("dashboard")}>
+            <button class={styles.ActionButton} onClick={setCurrentScreenForMode}>
               Продовжити
             </button>
           </Match>

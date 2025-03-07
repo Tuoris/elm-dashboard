@@ -25,6 +25,7 @@ export const SCREEN_NAMES = {
   CONNECTION_SCREEN: "connectionScreen",
   DASHBOARD: "dashboard",
   EV_DASHBOARD: "evDashboard",
+  EV_DASHBOARD_2: "evDashboard2",
 } as const;
 
 export type ScreenName = (typeof SCREEN_NAMES)[keyof typeof SCREEN_NAMES];
