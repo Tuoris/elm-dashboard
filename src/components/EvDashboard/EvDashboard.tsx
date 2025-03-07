@@ -251,14 +251,15 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
           />
           <text
             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:18.2314px;font-family:Consolas;-inkscape-font-specification:'Open Sans';text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f2f2f2;fill-opacity:0.844653;stroke-width:15.1928;stroke-linejoin:round;stroke-dashoffset:17583.1;paint-order:stroke fill markers"
-            x="93.454964"
+            x="92.912605"
             id="text1"
+            y="0"
           >
             <tspan
               id="speedSpan"
               ref={speedSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Consolas;-inkscape-font-specification:Consolas;text-align:end;text-anchor:end;stroke-width:15.1928"
-              x="123.45496"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;stroke-width:15.1928"
+              x="122.9126"
               y="81.488785"
             >
               320
@@ -266,16 +267,16 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
           </text>
           <text
             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.1436px;font-family:Consolas;-inkscape-font-specification:'Open Sans';text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f2f2f2;fill-opacity:0.844653;stroke-width:8.453;stroke-linejoin:round;stroke-dashoffset:17583.1;paint-order:stroke fill markers"
-            x="104.04424"
+            x="105.20061"
             id="text1-1"
-            y="57.650658"
+            y="47.70742"
           >
             <tspan
               id="socSpan"
               ref={socSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Consolas;-inkscape-font-specification:Consolas;text-align:end;text-anchor:end;stroke-width:8.453"
-              x="120.73571"
-              y="102.98955"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;stroke-width:8.453"
+              x="121.89207"
+              y="93.04631"
             >
               100%
             </tspan>
@@ -288,7 +289,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
             <tspan
               id="powerSpan"
               ref={powerSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Gadugi;-inkscape-font-specification:Gadugi;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:#24211f;stroke-width:0.7;stroke-dasharray:none;stroke-opacity:1"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:#24211f;stroke-width:0.7;stroke-dasharray:none;stroke-opacity:1"
               x="142.82275"
               y="50.211357"
             >
@@ -303,7 +304,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
             <tspan
               id="batteryVoltageSpan"
               ref={batteryVoltageSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;-inkscape-font-specification:'Open Sans';text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
               x="44.181839"
               y="106.2525"
             >
@@ -319,7 +320,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
             <tspan
               id="batteryVoltageDiffSpan"
               ref={batteryVoltageDiffSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;-inkscape-font-specification:'Open Sans';text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:2.9495"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:2.9495"
               x="44.754635"
               y="109.95081"
             >
@@ -334,7 +335,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
             <tspan
               id="batteryTemperatureSpan"
               ref={batteryTemperatureSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;-inkscape-font-specification:'Open Sans';text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
               x="24.793421"
               y="106.2525"
             >
@@ -350,7 +351,7 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
             <tspan
               id="batteryTemperatureDiffSpan"
               ref={batteryTemperatureDiffSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;-inkscape-font-specification:'Open Sans';text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:2.77667"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:2.77667"
               x="22.470625"
               y="110.02242"
             >
@@ -373,18 +374,18 @@ export const EvDashboard: Component<{ goToMainScreen: () => void }> = (props) =>
             </tspan>
           </text>
           <text
-            style="       font-size: 7.05556px;       text-align: start;       writing-mode: lr-tb;       direction: ltr;       text-anchor: start;       fill: #f9f9f9;       fill-opacity: 0.844653;       stroke-width: 15.1928;       stroke-linejoin: round;       stroke-dashoffset: 17583.1;       paint-order: stroke fill markers;     "
-            x="99.250504"
-            y="90.699226"
+            style="font-size:5.33333px;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f9f9f9;fill-opacity:0.844653;stroke-width:15.1928;stroke-linejoin:round;stroke-dashoffset:17583.1;paint-order:stroke fill markers"
+            x="122.57192"
+            y="81.298347"
             id="text1-8"
           >
             <tspan
               id="tspan1-2"
-              style='         font-style: italic;         font-variant: normal;         font-weight: normal;         font-stretch: normal;         font-size: 7.05556px;         -inkscape-font-specification: "Open Sans Italic";         stroke-width: 15.1928;         fill: #f9f9f9;       '
-              x="99.250504"
-              y="90.699226"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;font-family:Monospace;-inkscape-font-specification:Monospace;fill:#f9f9f9;stroke-width:15.1928"
+              x="122.57192"
+              y="81.298347"
             >
-              &#10; &#10; км/год&#10;&#10;{" "}
+              км/год{" "}
             </tspan>
           </text>
           <path

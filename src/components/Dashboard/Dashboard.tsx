@@ -96,11 +96,12 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
     const animationRangeStart = 96;
     const animationRangeEnd = 45;
 
+    const relativeThrottleValue = (value: number) => (value - 0) / (100 - 0);
+
     const keyFrames = [
-      { y: `${animationRangeStart}px`, fill: "#2a7fff" },
-      { fill: "#2a7fff", offset: (30 - 10) / (130 - 10) },
-      { fill: "#ffffff", offset: (50 - 10) / (130 - 10) },
-      { fill: "#ffffff", offset: (100 - 10) / (130 - 10) },
+      { y: `${animationRangeStart}px`, fill: "#ffffff" },
+      { fill: "#ffffff", offset: relativeThrottleValue(50) },
+      { fill: "#ffffff", offset: relativeThrottleValue(80) },
       { y: `${animationRangeEnd}px`, fill: "#ff2a2a" },
     ];
 
@@ -109,7 +110,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
     });
 
     const updateValue = () => {
-      const relativeValue = (carLiveData.throttleValue - 10) / (130 - 10);
+      const relativeValue = relativeThrottleValue(carLiveData.throttleValue);
       updateAnimationProgress(animation, relativeValue);
       throttleSpan.innerHTML = `${carLiveData.throttleValue}%`;
       requestAnimationFrame(updateValue);
@@ -213,7 +214,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
             <tspan
               id="speedSpan"
               ref={speedSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Consolas;-inkscape-font-specification:Consolas;text-align:end;text-anchor:end;stroke-width:15.1928"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;stroke-width:15.1928"
               x="123.45496"
               y="81.488785"
             >
@@ -228,7 +229,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
             <tspan
               id="rpmSpan"
               ref={rpmSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Gadugi;-inkscape-font-specification:Gadugi;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:#24211f;stroke-width:0.7;stroke-dasharray:none;stroke-opacity:1"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:#24211f;stroke-width:0.7;stroke-dasharray:none;stroke-opacity:1"
               x="142.82275"
               y="50.211357"
             >
@@ -243,7 +244,7 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
             <tspan
               id="throttleSpan"
               ref={throttleSpan}
-              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;-inkscape-font-specification:'Open Sans';text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
               x="44.181839"
               y="106.2525"
             >
@@ -251,14 +252,14 @@ export const Dashboard: Component<{ goToMainScreen: () => void }> = (props) => {
             </tspan>
           </text>
           <text
-            style='       font-style: normal;       font-variant: normal;       font-weight: normal;       font-stretch: normal;       font-size: 4.13432px;       font-family: Consolas;       -inkscape-font-specification: "Open Sans";       text-align: end;       writing-mode: lr-tb;       direction: ltr;       text-anchor: start;       fill: #f9f9f9;       fill-opacity: 0.844653;       stroke-width: 3.44526;       stroke-linejoin: round;       stroke-dashoffset: 17583.1;       paint-order: stroke fill markers;     '
+            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.13432px;font-family:Consolas;-inkscape-font-specification:'Open Sans';text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f9f9f9;fill-opacity:0.844653;stroke-width:3.44526;stroke-linejoin:round;stroke-dashoffset:17583.1;paint-order:stroke fill markers"
             x="17.990339"
             id="text4"
           >
             <tspan
               id="coolantTemperatureSpan"
               ref={coolantTemperatureSpan}
-              style='         font-style: normal;         font-variant: normal;         font-weight: normal;         font-stretch: normal;         -inkscape-font-specification: "Open Sans";         text-align: end;         text-anchor: end;         stroke-width: 3.44526;         fill: #f9f9f9;       '
+              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
               x="24.793421"
               y="106.2525"
             >

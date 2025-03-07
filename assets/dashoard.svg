@@ -18,9 +18,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="3.9112891"
-     inkscape:cx="63.0227"
-     inkscape:cy="21.09279"
+     inkscape:zoom="5.5313981"
+     inkscape:cx="110.00835"
+     inkscape:cy="40.948056"
      inkscape:window-width="1920"
      inkscape:window-height="1013"
      inkscape:window-x="-9"
@@ -79,7 +79,7 @@
      x="93.454964"
      id="text1"><tspan
        id="speedSpan"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Consolas;-inkscape-font-specification:Consolas;text-align:end;text-anchor:end;stroke-width:15.1928"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;stroke-width:15.1928"
        x="123.45496"
        y="81.488785">320</tspan></text>
   <text
@@ -87,7 +87,7 @@
      x="112.82273"
      id="text2"><tspan
        id="rpmSpan"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Gadugi;-inkscape-font-specification:Gadugi;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:#24211f;stroke-width:0.7;stroke-dasharray:none;stroke-opacity:1"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:#24211f;stroke-width:0.7;stroke-dasharray:none;stroke-opacity:1"
        x="142.82275"
        y="50.211357">6500</tspan></text>
   <text
@@ -95,17 +95,17 @@
      x="37.378757"
      id="text3"><tspan
        id="throttleSpan"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;-inkscape-font-specification:'Open Sans';text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
        x="44.181839"
        y="106.2525">100%</tspan></text>
   <text
-     style="       font-style: normal;       font-variant: normal;       font-weight: normal;       font-stretch: normal;       font-size: 4.13432px;       font-family: Consolas;       -inkscape-font-specification: &quot;Open Sans&quot;;       text-align: end;       writing-mode: lr-tb;       direction: ltr;       text-anchor: start;       fill: #f9f9f9;       fill-opacity: 0.844653;       stroke-width: 3.44526;       stroke-linejoin: round;       stroke-dashoffset: 17583.1;       paint-order: stroke fill markers;     "
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.13432px;font-family:Consolas;-inkscape-font-specification:'Open Sans';text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f9f9f9;fill-opacity:0.844653;stroke-width:3.44526;stroke-linejoin:round;stroke-dashoffset:17583.1;paint-order:stroke fill markers"
      x="17.990339"
      id="text4"><tspan
        id="coolantTemperatureSpan"
-       style="         font-style: normal;         font-variant: normal;         font-weight: normal;         font-stretch: normal;         -inkscape-font-specification: &quot;Open Sans&quot;;         text-align: end;         text-anchor: end;         stroke-width: 3.44526;         fill: #f9f9f9;       "
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Monospace;-inkscape-font-specification:Monospace;text-align:end;text-anchor:end;fill:#f9f9f9;stroke-width:3.44526"
        x="24.793421"
-       y="106.2525">&#10; &#10; 140°C&#10;&#10; </tspan></text>
+       y="106.2525">140°C</tspan></text>
   <text
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.44216px;font-family:Consolas;-inkscape-font-specification:'Open Sans';text-align:end;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#f9f9f9;fill-opacity:0.844653;stroke-width:3.7018;stroke-linejoin:round;stroke-dashoffset:17583.1;paint-order:stroke fill markers"
      x="5.9197226"
