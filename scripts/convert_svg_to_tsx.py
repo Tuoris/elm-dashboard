@@ -29,6 +29,7 @@ refsToFind = [
     "cellVoltageDiffSpan",
     "heaterTempSpan",
     "batteryInletTempSpan",
+    "maxPowerSpan",
 ]
 
 
