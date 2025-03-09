@@ -122,7 +122,7 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
       } else {
         powerSpan.innerHTML = `${powerKwt.toFixed()}`;
       }
-      maxPowerSpan.innerHTML = `${carLiveData.maxPowerValue}`;
+      maxPowerSpan.innerHTML = `${carLiveData.maxPowerValue.toFixed()}`;
       requestAnimationFrame(updateValue);
     };
 
@@ -364,9 +364,9 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
             id="path27"
           />
           <path
-            d="M864.535 205.186L660.283 852.593C658.657 857.749 662.506 863 667.913 863H686.006C690.358 863 694.21 860.186 695.533 856.04L841.248 399.381C843.365 392.748 849.528 388.245 856.491 388.245H1281C1289.84 388.245 1297 381.082 1297 372.245V210C1297 201.163 1289.84 194 1281 194H879.793C872.811 194 866.635 198.528 864.535 205.186Z"
-            fill="#FFE991"
-            stroke="#1B1B1B"
+            d="M 864.535,205.186 660.283,852.593 c -1.626,5.156 2.223,10.407 7.63,10.407 h 18.093 c 4.352,0 8.204,-2.814 9.527,-6.96 L 841.248,399.381 c 2.117,-6.633 8.28,-11.136 15.243,-11.136 H 1281 c 8.84,0 16,-7.163 16,-16 V 210 c 0,-8.837 -7.16,-16 -16,-16 H 879.793 c -6.982,0 -13.158,4.528 -15.258,11.186 z"
+            fill="#ffe991"
+            stroke="#1b1b1b"
             stroke-width="6"
             id="powerValue"
             ref={powerValue}
@@ -453,7 +453,7 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
           </text>
           <text
             fill="#ffe991"
-            style="white-space:pre"
+            style="white-space:pre;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
             font-family="'Ubuntu Condensed'"
             font-size="64px"
             letter-spacing="0em"
@@ -461,8 +461,14 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
             x="98.721397"
             y="0"
           >
-            <tspan x="1820.0654" y="311.776" id="powerSpan" ref={powerSpan} style="text-align:end;text-anchor:end">
-              12
+            <tspan
+              x="1820.0654"
+              y="311.776"
+              id="powerSpan"
+              ref={powerSpan}
+              style="text-align:end;text-anchor:end;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
+            >
+              150
             </tspan>
           </text>
           <text
@@ -478,15 +484,23 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
             </tspan>
           </text>
           <text
-            fill="#FFE991"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
-            font-size="64"
+            fill="#ffe991"
+            style="white-space:pre"
+            font-family="'Ubuntu Condensed'"
+            font-size="64px"
             letter-spacing="0em"
             id="text48"
+            x="153.93118"
+            y="-0.68201613"
           >
-            <tspan x="569" y="415.776" id="maxPowerSpan" ref={maxPowerSpan}>
-              110
+            <tspan
+              x="648.17914"
+              y="415.09399"
+              id="maxPowerSpan"
+              ref={maxPowerSpan}
+              style="text-align:end;text-anchor:end"
+            >
+              170
             </tspan>
           </text>
           <text

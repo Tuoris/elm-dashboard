@@ -23,9 +23,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="0.99142264"
-     inkscape:cx="939.55894"
-     inkscape:cy="528.0291"
+     inkscape:zoom="0.49571132"
+     inkscape:cx="966.2882"
+     inkscape:cy="390.34816"
      inkscape:window-width="1920"
      inkscape:window-height="1013"
      inkscape:window-x="-9"
@@ -283,7 +283,7 @@
   <text
      fill="#ffe991"
      xml:space="preserve"
-     style="white-space:pre"
+     style="white-space:pre;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
      font-family="'Ubuntu Condensed'"
      font-size="64px"
      letter-spacing="0em"
@@ -293,7 +293,7 @@
        x="1820.0654"
        y="311.776"
        id="powerSpan"
-       style="text-align:end;text-anchor:end">12</tspan></text>
+       style="text-align:end;text-anchor:end;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1">150</tspan></text>
   <text
      fill="#FFE991"
      xml:space="preserve"
@@ -306,16 +306,19 @@
        y="311.874"
        id="tspan47">кВт</tspan></text>
   <text
-     fill="#FFE991"
+     fill="#ffe991"
      xml:space="preserve"
-     style="white-space: pre"
-     font-family="Ubuntu Condensed"
-     font-size="64"
+     style="white-space:pre"
+     font-family="'Ubuntu Condensed'"
+     font-size="64px"
      letter-spacing="0em"
-     id="text48"><tspan
-       x="569"
-       y="415.776"
-       id="maxPowerSpan">110</tspan></text>
+     id="text48"
+     x="153.93118"
+     y="-0.68201613"><tspan
+       x="648.17914"
+       y="415.09399"
+       id="maxPowerSpan"
+       style="text-align:end;text-anchor:end">170</tspan></text>
   <text
      fill="#FFE991"
      xml:space="preserve"
