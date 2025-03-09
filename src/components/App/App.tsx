@@ -71,7 +71,7 @@ export const App: Component = () => {
       >
         <For each={Object.values(DASHBOARD_MODES)}>
           {(mode) => (
-            <option value={currentMode()} selected={mode === currentMode()}>
+            <option value={mode} selected={mode === currentMode()}>
               {MODE_LABELS[mode]}
             </option>
           )}
