@@ -103,6 +103,9 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
       const powerKwt = powerW / 1000;
       const relativeValue = powerKwt / 150;
       updateAnimationProgress(animation, relativeValue);
+      if (carLiveData.batteryPower < 0) {
+        powerValue.style.fill = "#78db84ff";
+      }
       requestAnimationFrame(updateValue);
     };
 
