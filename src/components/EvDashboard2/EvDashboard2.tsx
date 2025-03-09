@@ -374,10 +374,14 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
             id="powerValue"
             ref={powerValue}
           />
-          <path d="M179 109L191.124 130H166.876L179 109Z" fill="#FBFBF9" id="path29" />
-          <path d="M179 156L166.876 135H191.124L179 156Z" fill="#FBFBF9" id="path30" />
-          <path d="M349 109L361.124 130H336.876L349 109Z" fill="#FF9191" id="path31" />
-          <path d="M349 156L336.876 135H361.124L349 156Z" fill="#FF9191" id="path32" />
+          <g id="g2" transform="translate(-2,-2)">
+            <path d="M 153,103 L 165.124,124 H 140.876 Z" fill="#fbfbf9" id="path29" />
+            <path d="M 153,150 L 140.876,129 H 165.124 Z" fill="#fbfbf9" id="path30" />
+          </g>
+          <g id="g1" transform="translate(-2,-4)">
+            <path d="M 325,105 L 337.124,126 H 312.876 Z" fill="#ff9191" id="path31" />
+            <path d="M 325,152 L 312.876,131 H 337.124 Z" fill="#ff9191" id="path32" />
+          </g>
           <path
             d="M1326.87 623H1223V696H1324.35C1329.46 696 1334.16 693.218 1336.62 688.74L1351.13 662.338C1353.5 658.018 1353.23 652.728 1350.42 648.677L1335.92 627.737C1333.86 624.77 1330.48 623 1326.87 623Z"
             fill="white"
@@ -430,7 +434,7 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
           />
           <text
             fill="#fbfbf9"
-            style="white-space:pre"
+            style="font-size:122.667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="96px"
             letter-spacing="0em"
@@ -438,7 +442,13 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
             x="236.12805"
             y="0"
           >
-            <tspan x="1308" y="564.664" id="speedSpan" ref={speedSpan} style="text-align:end;text-anchor:end">
+            <tspan
+              x="1308"
+              y="564.664"
+              id="speedSpan"
+              ref={speedSpan}
+              style="font-size:122.667px;text-align:end;text-anchor:end"
+            >
               120
             </tspan>
           </text>
@@ -456,39 +466,41 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
           </text>
           <text
             fill="#ffe991"
-            style="white-space:pre;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
+            style="font-size:96px;white-space:pre;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
             font-family="'Ubuntu Condensed'"
             font-size="64px"
             letter-spacing="0em"
             id="text46"
-            x="98.721397"
-            y="0"
+            x="162.96448"
+            y="-9.0778656"
           >
             <tspan
-              x="1820.0654"
-              y="311.776"
+              x="1884.3086"
+              y="302.69815"
               id="powerSpan"
               ref={powerSpan}
-              style="text-align:end;text-anchor:end;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
+              style="font-size:96px;text-align:end;text-anchor:end;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
             >
-              150
+              999
             </tspan>
           </text>
           <text
-            fill="#FFE991"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
-            font-size="36"
+            fill="#ffe991"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
+            font-size="36px"
             letter-spacing="0em"
             id="text47"
+            x="10.017303"
+            y="35.302803"
           >
-            <tspan x="1823" y="311.874" id="tspan47">
+            <tspan x="1833.0173" y="347.17679" id="tspan47" style="font-size:37.3333px">
               кВт
             </tspan>
           </text>
           <text
             fill="#ffe991"
-            style="white-space:pre"
+            style="font-size:74.6667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="64px"
             letter-spacing="0em"
@@ -501,52 +513,54 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
               y="415.09399"
               id="maxPowerSpan"
               ref={maxPowerSpan}
-              style="text-align:end;text-anchor:end"
+              style="font-size:74.6667px;text-align:end;text-anchor:end"
             >
               170
             </tspan>
           </text>
           <text
-            fill="#FFE991"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
+            fill="#ffe991"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
             font-size="36"
             letter-spacing="0em"
             id="text49"
           >
-            <tspan x="657" y="415.874" id="tspan49">
+            <tspan x="657" y="415.87399" id="tspan49" style="font-size:37.3333px">
               кВт
             </tspan>
           </text>
           <text
             fill="#ff9191"
-            style="white-space:pre"
+            style="font-size:74.6667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="48px"
             letter-spacing="0em"
             id="text50"
-            x="76.768013"
-            y="0"
+            x="88.768013"
+            y="6"
           >
             <tspan
-              x="1176"
-              y="933.33197"
+              x="1188"
+              y="939.33197"
               id="heaterTempSpan"
               ref={heaterTempSpan}
-              style="text-align:end;text-anchor:end"
+              style="font-size:74.6667px;text-align:end;text-anchor:end"
             >
-              40
+              99
             </tspan>
           </text>
           <text
-            fill="#FF9191"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
-            font-size="24"
+            fill="#ff9191"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
+            font-size="24px"
             letter-spacing="0em"
             id="text51"
+            x="12"
+            y="6"
           >
-            <tspan x="1178" y="932.916" id="tspan51">
+            <tspan x="1190" y="938.91602" id="tspan51" style="font-size:37.3333px">
               °C
             </tspan>
           </text>
@@ -578,39 +592,41 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
           </text>
           <text
             fill="#91c6ff"
-            style="white-space:pre"
+            style="font-size:74.6667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="48px"
             letter-spacing="0em"
             id="text54"
-            x="57.375992"
-            y="0"
+            x="81.375992"
+            y="2"
           >
             <tspan
-              x="1431"
-              y="933.33197"
+              x="1455"
+              y="935.33197"
               id="batteryInletTempSpan"
               ref={batteryInletTempSpan}
-              style="text-align:end;text-anchor:end"
+              style="font-size:74.6667px;text-align:end;text-anchor:end"
             >
-              -1
+              -99
             </tspan>
           </text>
           <text
-            fill="#91C6FF"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
-            font-size="24"
+            fill="#91c6ff"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
+            font-size="24px"
             letter-spacing="0em"
             id="text55"
+            x="24"
+            y="2"
           >
-            <tspan x="1429" y="932.916" id="tspan55">
+            <tspan x="1453" y="934.91602" id="tspan55" style="font-size:37.3333px">
               °C
             </tspan>
           </text>
           <text
             fill="#ffffff"
-            style="white-space:pre"
+            style="font-size:74.6667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="48px"
             letter-spacing="0em"
@@ -623,26 +639,26 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
               y="150.332"
               id="batteryTemperatureDiffSpan"
               ref={batteryTemperatureDiffSpan}
-              style="text-align:end;text-anchor:end"
+              style="font-size:74.6667px;text-align:end;text-anchor:end"
             >
-              1
+              99
             </tspan>
           </text>
           <text
-            fill="white"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
+            fill="#ffffff"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
             font-size="24"
             letter-spacing="0em"
             id="text57"
           >
-            <tspan x="232" y="149.916" id="tspan57">
+            <tspan x="232" y="149.916" id="tspan57" style="font-size:37.3333px">
               °C
             </tspan>
           </text>
           <text
             fill="#ffffff"
-            style="white-space:pre"
+            style="font-size:74.6667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="48px"
             letter-spacing="0em"
@@ -655,26 +671,26 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
               y="945.33197"
               id="batteryTemperatureSpan"
               ref={batteryTemperatureSpan}
-              style="text-align:end;text-anchor:end"
+              style="font-weight:bold;font-size:74.6667px;text-align:end;text-anchor:end"
             >
               15
             </tspan>
           </text>
           <text
-            fill="white"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
+            fill="#ffffff"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
             font-size="24"
             letter-spacing="0em"
             id="text59"
           >
-            <tspan x="239" y="944.916" id="tspan59">
+            <tspan x="239" y="944.91602" id="tspan59" style="font-size:37.3333px">
               °C
             </tspan>
           </text>
           <text
             fill="#ff9191"
-            style="white-space:pre"
+            style="font-size:74.6667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="48px"
             letter-spacing="0em"
@@ -687,26 +703,26 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
               y="150.332"
               id="cellVoltageDiffSpan"
               ref={cellVoltageDiffSpan}
-              style="text-align:end;text-anchor:end"
+              style="font-size:74.6667px;text-align:end;text-anchor:end"
             >
-              0.04
+              9.99
             </tspan>
           </text>
           <text
-            fill="#FF9191"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
+            fill="#ff9191"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
             font-size="24"
             letter-spacing="0em"
             id="text61"
           >
-            <tspan x="462" y="149.916" id="tspan61">
+            <tspan x="462" y="149.916" id="tspan61" style="font-size:37.3333px">
               В
             </tspan>
           </text>
           <text
             fill="#fbfbf9"
-            style="white-space:pre"
+            style="font-size:74.6667px;white-space:pre"
             font-family="'Ubuntu Condensed'"
             font-size="48px"
             letter-spacing="0em"
@@ -719,20 +735,20 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
               y="940.33197"
               id="cellVoltageSpan"
               ref={cellVoltageSpan}
-              style="text-align:end;text-anchor:end"
+              style="font-size:74.6667px;text-align:end;text-anchor:end"
             >
               3.75
             </tspan>
           </text>
           <text
-            fill="#FBFBF9"
-            style="white-space: pre"
-            font-family="Ubuntu Condensed"
+            fill="#fbfbf9"
+            style="font-size:37.3333px;white-space:pre"
+            font-family="'Ubuntu Condensed'"
             font-size="24"
             letter-spacing="0em"
             id="text63"
           >
-            <tspan x="456" y="939.916" id="tspan63">
+            <tspan x="456" y="939.91602" id="tspan63" style="font-size:37.3333px">
               В
             </tspan>
           </text>
