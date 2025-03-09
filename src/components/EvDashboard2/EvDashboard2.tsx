@@ -209,9 +209,9 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
       const batteryMedVoltage = (carLiveData.maxCellVoltageValue + carLiveData.minCellVoltageValue) / 2;
       const batterVoltageDiff = Math.abs(carLiveData.maxCellVoltageValue - carLiveData.minCellVoltageValue);
       const relativeVoltageMaxValue = relativeVoltageValue(carLiveData.maxCellVoltageValue);
-      const relativeVoltageMinValue = relativeVoltageValue(carLiveData.minCellVoltageValue);
-      updateAnimationProgress(animationVoltageMax, relativeVoltageMinValue);
-      updateAnimationProgress(animationVoltageMin, relativeVoltageMaxValue);
+      const relativeVoltageMinValue = relativeVoltageValue(carLiveData.minCellVoltageValue - 0.034);
+      updateAnimationProgress(animationVoltageMax, relativeVoltageMaxValue);
+      updateAnimationProgress(animationVoltageMin, relativeVoltageMinValue);
       cellVoltageSpan.innerHTML = `${batteryMedVoltage.toFixed(2)}`;
       cellVoltageDiffSpan.innerHTML = `${batterVoltageDiff.toFixed(2)}`;
       requestAnimationFrame(updateValue);
