@@ -1,4 +1,3 @@
-
 export function updateAnimationProgress(animation: Animation, relativeValue: number) {
   const animationTiming = animation.effect?.getComputedTiming();
   if (animationTiming) {

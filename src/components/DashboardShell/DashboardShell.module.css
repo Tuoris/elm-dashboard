@@ -1,4 +1,4 @@
-.Dashboard {
+.DashboardShell {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,13 +6,6 @@
     justify-content: center;
     height: 100vh;
     background-color: #24211f;
-}
-
-.DashContainer {
-    width: 100%;
-    height: auto;
-    overflow: hidden;
-    aspect-ratio: 640 / 479;
 }
 
 .TopControlButtons {
@@ -32,8 +25,15 @@
     color: var(--accent);
 }
 
-.ControlButton:hover {
+.ControlButton:focus-visible {
     opacity: 1;
     color: initial;
     background: var(--accent);
+}
+
+.PanelContainer {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    aspect-ratio: 640 / 479;
 }
