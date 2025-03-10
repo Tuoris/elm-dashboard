@@ -410,7 +410,7 @@ export const EvDashboardPanel2: Component = () => {
       </text>
       <text
         fill="#ffe991"
-        style="font-size:96px;white-space:pre;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
+        style="font-size:85.3333px;white-space:pre;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
         font-family="'Ubuntu Condensed'"
         font-size="64px"
         letter-spacing="0em"
@@ -423,7 +423,7 @@ export const EvDashboardPanel2: Component = () => {
           y="302.69815"
           id="powerSpan"
           ref={powerSpan}
-          style="font-size:96px;text-align:end;text-anchor:end;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
+          style="font-size:85.3333px;text-align:end;text-anchor:end;stroke:#24211f;stroke-width:1.00157;stroke-dasharray:none;stroke-opacity:1"
         >
           999
         </tspan>

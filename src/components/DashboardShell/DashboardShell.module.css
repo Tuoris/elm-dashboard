@@ -40,7 +40,16 @@
 }
 
 .DemoModeParams {
+    box-sizing: border-box;
     padding: 0.5rem;
-    overflow: scroll;
+    overflow: auto;
     display: block;
+    width: min(80rem, 100%);
+
+
+    label {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
 }
