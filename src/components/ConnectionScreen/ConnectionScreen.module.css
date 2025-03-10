@@ -2,15 +2,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 90vh;
+    min-height: 84vh;
     flex-direction: column;
     padding: 0.5rem;
 }
 
-.LinkWrapper {
-    padding: 0.5rem;
-    align-self: flex-start;
-}
 
 .ConnectionLogs {
     display: block;

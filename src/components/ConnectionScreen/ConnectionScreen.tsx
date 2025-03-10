@@ -9,6 +9,7 @@ type ConnectionScreenProps = {
   logs: Accessor<Logs>;
   setCurrentScreenName: Setter<ScreenName>;
   mode: Accessor<string>;
+  isDemoMode: Accessor<boolean>;
 };
 
 const classNameByLogLevel: Record<string, string> = {
@@ -30,17 +31,18 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
   };
 
   const connect = async () => {
-    const isProperlyConnected = await props.bluetoothAdapter.connect();
-    if (isProperlyConnected) {
+    if (props.isDemoMode()) {
       setCurrentScreenForMode();
+    } else {
+      const isProperlyConnected = await props.bluetoothAdapter.connect();
+      if (isProperlyConnected) {
+        setCurrentScreenForMode();
+      }
     }
   };
 
   return (
     <div class={styles.ConnectionScreen}>
-      <div class={styles.LinkWrapper}>
-        <a href="https://utils.tupychak.com.ua/"> ← На головну </a>
-      </div>
       <pre class={styles.ConnectionLogs}>
         <For each={props.logs()}>
           {(log) => <div class={classNameByLogLevel[log?.level || "info"]}>{log.message}</div>}

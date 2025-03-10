@@ -76,7 +76,7 @@ export const EvDashboardPanel2: Component = () => {
       const powerKwt = powerW / 1000;
       speedSpan.innerHTML = `${carLiveData.vehicleSpeed.toFixed()}`;
       socSpan.innerHTML = `${carLiveData.socValue.toFixed()}`;
-      if (powerW < 2000) {
+      if (Math.abs(powerW) < 2000) {
         powerSpan.innerHTML = `${powerW.toFixed()}`;
         powerUnit.innerHTML = "Вт";
       } else {

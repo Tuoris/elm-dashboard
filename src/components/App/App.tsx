@@ -39,11 +39,13 @@ export const App: Component = () => {
     (modeFromUrl as DashboardModeType) || DASHBOARD_MODES.ICE
   );
 
+  const [isDemoMode, setIsDemoMode] = createSignal(false);
+
   const [carParams, setCarParams] = createStore<CarLiveDataType>(DEFAULT_CAR_LIVE_DATA);
 
   const mainLoop = async () => {
     while (true) {
-      if (bluetoothAdapter.isConnected) {
+      if (bluetoothAdapter.isConnected && !isDemoMode()) {
         const mode = currentMode();
 
         if (mode === DASHBOARD_MODES.ICE) {
@@ -65,28 +67,41 @@ export const App: Component = () => {
 
   return (
     <div class={styles.App}>
-      <select
-        class={styles.DashboardModeSelector}
-        onChange={(event) => setCurrentMode(event.target.value as DashboardModeType)}
-      >
-        <For each={Object.values(DASHBOARD_MODES)}>
-          {(mode) => (
-            <option value={mode} selected={mode === currentMode()}>
-              {MODE_LABELS[mode]}
-            </option>
-          )}
-        </For>
-      </select>
+      <div class={styles.LinkWrapper}>
+        <a href="https://utils.tupychak.com.ua/"> ← На головну </a>
+      </div>
+      <div class={styles.ModeControls}>
+        <select
+          class={styles.DashboardModeSelector}
+          onChange={(event) => setCurrentMode(event.target.value as DashboardModeType)}
+        >
+          <For each={Object.values(DASHBOARD_MODES)}>
+            {(mode) => (
+              <option value={mode} selected={mode === currentMode()}>
+                {MODE_LABELS[mode]}
+              </option>
+            )}
+          </For>
+        </select>
+        <label class={styles.DemoModeLabel}>
+          <span>Демо режим</span>
+          <input
+            type="checkbox"
+            checked={isDemoMode()}
+            onChange={() => setIsDemoMode((currentValue) => !currentValue)}
+          />
+        </label>
+      </div>
       <CarLiveDataContext.Provider value={carParams}>
-        <div>
-          {ROUTER[getCurrentScreenName()]({
-            bluetoothAdapter,
-            logs,
-            setCurrentScreenName,
-            goToMainScreen,
-            mode: currentMode,
-          })}
-        </div>
+        {ROUTER[getCurrentScreenName()]({
+          bluetoothAdapter,
+          logs,
+          setCurrentScreenName,
+          goToMainScreen,
+          mode: currentMode,
+          isDemoMode,
+          setDemoParams: setCarParams,
+        })}
       </CarLiveDataContext.Provider>
     </div>
   );
