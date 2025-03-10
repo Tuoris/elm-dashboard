@@ -8,6 +8,29 @@
 }
 
 
+.ModeControls {
+    width: 100%;
+    display: flex;
+    padding: 0.5rem;
+    gap: 0.5rem;
+    align-items: baseline;
+}
+
+.DemoModeLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    input {
+        margin-top: .5rem;
+    }
+}
+
+.DashboardModeSelector {
+    width: 50%
+}
+
+
 .ConnectionLogs {
     display: block;
     padding: 0.4rem;

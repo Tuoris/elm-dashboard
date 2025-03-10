@@ -70,28 +70,7 @@ export const App: Component = () => {
       <div class={styles.LinkWrapper}>
         <a href="https://utils.tupychak.com.ua/"> ← На головну </a>
       </div>
-      <div class={styles.ModeControls}>
-        <select
-          class={styles.DashboardModeSelector}
-          onChange={(event) => setCurrentMode(event.target.value as DashboardModeType)}
-        >
-          <For each={Object.values(DASHBOARD_MODES)}>
-            {(mode) => (
-              <option value={mode} selected={mode === currentMode()}>
-                {MODE_LABELS[mode]}
-              </option>
-            )}
-          </For>
-        </select>
-        <label class={styles.DemoModeLabel}>
-          <span>Демо режим</span>
-          <input
-            type="checkbox"
-            checked={isDemoMode()}
-            onChange={() => setIsDemoMode((currentValue) => !currentValue)}
-          />
-        </label>
-      </div>
+
       <CarLiveDataContext.Provider value={carParams}>
         {ROUTER[getCurrentScreenName()]({
           bluetoothAdapter,
@@ -101,6 +80,9 @@ export const App: Component = () => {
           mode: currentMode,
           isDemoMode,
           setDemoParams: setCarParams,
+          currentMode,
+          setCurrentMode,
+          setIsDemoMode,
         })}
       </CarLiveDataContext.Provider>
     </div>

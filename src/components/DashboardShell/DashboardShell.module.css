@@ -4,7 +4,7 @@
     align-items: center;
     position: relative;
     justify-content: center;
-    min-height: 100vh;
+    height: 92vh;
     background-color: #24211f;
 }
 
@@ -34,13 +34,13 @@
 .PanelContainer {
     width: 100%;
     height: auto;
+    min-height: 48vh;
     overflow: hidden;
     aspect-ratio: 640 / 479;
 }
 
 .DemoModeParams {
     padding: 0.5rem;
-    max-height: 30vh;
     overflow: scroll;
     display: block;
 }

@@ -1,8 +1,8 @@
-import { Accessor, Component, createEffect, createSignal, For, Match, Setter, Switch } from "solid-js";
+import { Accessor, Component, createEffect, createSignal, For, Match, Setter, Show, Switch } from "solid-js";
 import { Elm327BluetoothAdapter } from "../../features/Bluetooth/Bluetooth";
 import styles from "./ConnectionScreen.module.css";
 import { Logs, SCREEN_NAMES, ScreenName } from "../../types/common";
-import { DASHBOARD_MODES } from "../../constants/common.constants";
+import { DASHBOARD_MODES, DashboardModeType, MODE_LABELS } from "../../constants/common.constants";
 
 type ConnectionScreenProps = {
   bluetoothAdapter: Elm327BluetoothAdapter;
@@ -10,6 +10,9 @@ type ConnectionScreenProps = {
   setCurrentScreenName: Setter<ScreenName>;
   mode: Accessor<string>;
   isDemoMode: Accessor<boolean>;
+  currentMode: Accessor<DashboardModeType>;
+  setCurrentMode: Setter<DashboardModeType>;
+  setIsDemoMode: Setter<boolean>;
 };
 
 const classNameByLogLevel: Record<string, string> = {
@@ -43,6 +46,28 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
 
   return (
     <div class={styles.ConnectionScreen}>
+      <div class={styles.ModeControls}>
+        <select
+          class={styles.DashboardModeSelector}
+          onChange={(event) => props.setCurrentMode(event.target.value as DashboardModeType)}
+        >
+          <For each={Object.values(DASHBOARD_MODES)}>
+            {(mode) => (
+              <option value={mode} selected={mode === props.currentMode()}>
+                {MODE_LABELS[mode]}
+              </option>
+            )}
+          </For>
+        </select>
+        <label class={styles.DemoModeLabel}>
+          <span>Демо режим</span>
+          <input
+            type="checkbox"
+            checked={props.isDemoMode()}
+            onChange={() => props.setIsDemoMode((currentValue) => !currentValue)}
+          />
+        </label>
+      </div>
       <pre class={styles.ConnectionLogs}>
         <For each={props.logs()}>
           {(log) => <div class={classNameByLogLevel[log?.level || "info"]}>{log.message}</div>}
@@ -58,6 +83,7 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
           <Match when={!props.bluetoothAdapter.isConnected}>
             <button class={styles.ActionButton} onClick={connect}>
               З'єднатись з ELM 327
+              <Show when={props.isDemoMode()}> (Демо)</Show>
             </button>
           </Match>
         </Switch>
