@@ -30,6 +30,7 @@ refsToFind = [
     "heaterTempSpan",
     "batteryInletTempSpan",
     "maxPowerSpan",
+    "powerUnit",
 ]
 
 

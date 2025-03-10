@@ -69,6 +69,7 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
   let cellVoltageDiffSpan: SVGTSpanElement | undefined;
   let maxPowerSpan: SVGTSpanElement | undefined;
   let powerSpan: SVGTSpanElement | undefined;
+  let powerUnit: SVGTSpanElement | undefined;
   let heaterTempSpan: SVGTSpanElement | undefined;
   let batteryInletTempSpan: SVGTSpanElement | undefined;
 
@@ -103,9 +104,6 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
       const powerKwt = powerW / 1000;
       const relativeValue = powerKwt / 150;
       updateAnimationProgress(animation, relativeValue);
-      if (carLiveData.batteryPower < 0) {
-        powerValue.style.fill = "#78db84ff";
-      }
       requestAnimationFrame(updateValue);
     };
 
@@ -113,17 +111,18 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
   });
 
   onMount(() => {
-    if (!speedSpan || !powerSpan || !socSpan || !maxPowerSpan) return;
+    if (!speedSpan || !powerSpan || !socSpan || !maxPowerSpan || !powerUnit) return;
     const updateValue = () => {
-      const powerW = Math.abs(carLiveData.batteryPower);
+      const powerW = carLiveData.batteryPower;
       const powerKwt = powerW / 1000;
-      const relativeValue = powerKwt / 150;
       speedSpan.innerHTML = `${carLiveData.vehicleSpeed.toFixed()}`;
       socSpan.innerHTML = `${carLiveData.socValue.toFixed()}`;
       if (powerW < 2000) {
-        powerSpan.innerHTML = `${powerKwt.toFixed()}`;
+        powerSpan.innerHTML = `${powerW.toFixed()}`;
+        powerUnit.innerHTML = "Вт";
       } else {
         powerSpan.innerHTML = `${powerKwt.toFixed()}`;
+        powerUnit.innerHTML = "кВт";
       }
       maxPowerSpan.innerHTML = `${carLiveData.maxPowerValue.toFixed()}`;
       requestAnimationFrame(updateValue);
@@ -494,7 +493,7 @@ export const EvDashboard2: Component<{ goToMainScreen: () => void }> = (props) =
             x="10.017303"
             y="35.302803"
           >
-            <tspan x="1833.0173" y="347.17679" id="tspan47" style="font-size:37.3333px">
+            <tspan x="1833.0173" y="347.17679" id="powerUnit" ref={powerUnit} style="font-size:37.3333px">
               кВт
             </tspan>
           </text>
