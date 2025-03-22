@@ -9,9 +9,9 @@ type ConnectionScreenProps = {
   logs: Accessor<Logs>;
   setCurrentScreenName: Setter<ScreenName>;
   mode: Accessor<string>;
-  isDemoMode: Accessor<boolean>;
   currentMode: Accessor<DashboardModeType>;
   setCurrentMode: Setter<DashboardModeType>;
+  isDemoMode: Accessor<boolean>;
   setIsDemoMode: Setter<boolean>;
 };
 
@@ -28,6 +28,8 @@ export const ConnectionScreen: Component<ConnectionScreenProps> = (props) => {
       props.setCurrentScreenName(SCREEN_NAMES.EV_DASHBOARD);
     } else if (props.mode() === DASHBOARD_MODES.KONA_EV_FUTURISTIC) {
       props.setCurrentScreenName(SCREEN_NAMES.EV_DASHBOARD_2);
+    } else if (props.mode() === DASHBOARD_MODES.KONA_EV_ROUND) {
+      props.setCurrentScreenName(SCREEN_NAMES.EV_DASHBOARD_3);
     } else {
       props.setCurrentScreenName(SCREEN_NAMES.DASHBOARD);
     }

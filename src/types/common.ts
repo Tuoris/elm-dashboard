@@ -14,6 +14,8 @@ export type CarLiveDataType = {
   minCellVoltageValue: number;
   sohValue: number;
   heaterTemp: number;
+  forwardAccelerationG: number;
+  rightAccelerationG: number;
 };
 
 export type CarLiveDataParam = keyof CarLiveDataType;
@@ -26,6 +28,7 @@ export const SCREEN_NAMES = {
   DASHBOARD: "dashboard",
   EV_DASHBOARD: "evDashboard",
   EV_DASHBOARD_2: "evDashboard2",
+  EV_DASHBOARD_3: "evDashboard3",
 } as const;
 
 export type ScreenName = (typeof SCREEN_NAMES)[keyof typeof SCREEN_NAMES];

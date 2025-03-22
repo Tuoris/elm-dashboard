@@ -17,6 +17,8 @@ export const DEFAULT_CAR_LIVE_DATA: CarLiveDataType = {
   minCellVoltageValue: 0,
   sohValue: 0,
   heaterTemp: 0,
+  forwardAccelerationG: 0,
+  rightAccelerationG: 0,
 };
 
 export const CarLiveDataContext = createContext<CarLiveDataType>(DEFAULT_CAR_LIVE_DATA);
